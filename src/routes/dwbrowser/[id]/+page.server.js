@@ -8,13 +8,13 @@ export async function load({params}){
             id=parseInt(params['id']);
         }
 
-        console.log("https://www.doomworld.com/idgames/api/api.php?out=json&action=getcontents&id=" + id)
+        // console.log("https://www.doomworld.com/idgames/api/api.php?out=json&action=getcontents&id=" + id)
         const response = await fetch(`https://www.doomworld.com/idgames/api/api.php?out=json&action=getcontents&id=${id}`,{method:'GET'});
         //+params['slug']
         const responseData = await response.json()
         return({"data":responseData,"currentId":id,"currentTitle":title})
     }
     catch(err){
-        console.error(`Error in load function for /: ${err}`);
+        // console.error(`Error in load function for /: ${err}`);
     }
 }

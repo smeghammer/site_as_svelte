@@ -2,10 +2,11 @@
     export let data;
 </script>
 
-<!-- test -->
+<!-- this component will list individual items within the current directory. It is a WIP, and currently it just 
+lists the name of each item found. Eventyally, it will present download links -->
 <h3>Contents</h3>
 <!--
-    'thing' looks like this:
+    a 'thing' looks like this:
 {
     "id": 15372,
     "title": "HOKUTO NO DOOM - Level designer resource kit",

@@ -4,40 +4,21 @@
     import IDGamesPath from "$lib/components/IDGamesPath.svelte";
     export let data;
     $: data = data; //because we will pass additional args on browsing
-    console.log(data)
-
-    /** test of https://stackoverflow.com/questions/66698656/access-variable-in-a-component-updated-by-a-different-component-in-svelte 
-     * to allow sharing vars between sibling components
-     */
-    // export let fish;   
-
 
     /** 
+     * see https://stackoverflow.com/questions/66698656/access-variable-in-a-component-updated-by-a-different-component-in-svelte 
+     * to allow sharing vars between sibling components
+     * 
      * - when we first load, we are on level 1
      * - the BC is a small array, with each entry having a depth
      * - the LINKS are all to the depth BELOW the current parent.
      * - So all entries below ID=0 are > level 1  
-     * 
      */
-
-
-    // export let pathArray:number[] = [] // because components will need this 
-    // $: pathArray  = pathArray;
-    // $: {    // REACTIVE BLOCKS ARE KEY!!!!!
-    //     console.log("[page] currentId: ",data.currentId)
-    //     pathArray.push(data.currentId);
-    //     console.log(pathArray);
-    //     console.log(pathArray[pathArray.length-1]);
-    //     console.log(data.currentId);
-    // }
-
 </script>
 
 <div class="pure-u-1 pure-u-md-3-4 pure-u-lg-5-6">
     <h2>ID Games (slug)</h2>
 
-
-    <p>PATH ARRAY</p>
     <!-- the path component needs to render links with incremental depth attribute values, so going BACK will reset -->
     <IDGamesPath {data} />
     
@@ -54,8 +35,6 @@
     -->
 
     <IdGamesListContents {data}  />
-
-
 
 </div>
 

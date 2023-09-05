@@ -33,7 +33,7 @@ $: if($page.url.pathname.indexOf('/maps/')!== -1 || $page.url.pathname.indexOf('
         }
     }
 }
-
+console.log("PARENT NAME FROM STORE: ",$currentParent)
 // $: if($currentParent){
 //     current_linktext = $currentParent;
 // }

@@ -10,7 +10,7 @@
 
     export let parentTitle = "Root";
     $:parentTitle = parentTitle;
-    /**  this is where we are coming FROM. We need to retail the name so I can populate the BC - the ID Games API doesn't have
+    /**  this is where we are coming FROM. We need to retain the name so I can populate the BC - the ID Games API doesn't have
      * data about SELF.
      * Here, I am using a sveltekit STORE (see ref above) and the value set here on click of the navigation item (from a data-attribute)
      * is set to a store variable which is read by another component (a sibling, the IDGamesPath.svelte breadcrumb module) on this page.
@@ -18,13 +18,15 @@
      * section name and ID from the parent API entity. The ID is OK becaise that is the parameter passed into the API call, but I need to 
      * also extract and retain the path string in order to display the breadcrumb properly.
      * 
-     * Also, I need to ensure that the array is properly truncated on browsing BACK UP the tree. TODO:
+     * Also, I need to ensure that the array is properly truncated on browsing BACK UP the tree. 
+     * 
+     * See notes on IDGamesPath.svelte. This is proving problematic.:
     */
     $currentParent = "/";
 //  this is called ONCE  -OK.
     function setParent(){
         /** 
-         * because we may be navigating to the root of this section. 
+         * because we may be navigating to the root of this section from elsewhere. 
          * */
         if(this.getAttribute("data-title")){
             console.log("data-title: ",this.getAttribute("data-title"));
@@ -39,7 +41,7 @@
 <!-- test -->
 <h3>Directories {$currentParent}</h3>
 <!-- <p>TODO: incorporate the proper tree builder!</p> -->
-XX{parentTitle} YY{$currentParent} ZZ
+<!-- XX{parentTitle} YY{$currentParent} ZZ -->
 {#if data.data && data.data.content && data.data.content.dir}  <!-- this condition may need to be tightened -->
 <ul>
     {#each data.data.content.dir as thing}
@@ -47,6 +49,6 @@ XX{parentTitle} YY{$currentParent} ZZ
         data-parent="{parentTitle}" on:click={setParent}>{thing.name}</a></li>
     {/each}
 </ul>
-{:else}
-<p>NO SUBDIRS here</p>
+<!-- {:else}
+<p>NO SUBDIRS here</p> -->
 {/if}
