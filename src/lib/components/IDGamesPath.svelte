@@ -3,7 +3,7 @@
      * https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores
      * import my stores for BC and parent data, for READING in this component: */
     import {currentParent} from "$lib/components/stores"
-    import { Server } from "@sveltejs/kit";
+    // import { Server } from "@sveltejs/kit";
 
     //export let pathArray
     export let data;

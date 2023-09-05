@@ -9,7 +9,10 @@
     $: data;    // from layout.server.js
     //console.log("LAYOUT SERVER LOAD DATA: ",data);
 
-    
+    // globally set store:
+    import {currentTitle} from "$lib/components/stores"; //read-only here
+    $currentTitle = "";
+
 </script>
 
 <!-- title block -->

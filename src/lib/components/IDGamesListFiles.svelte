@@ -4,6 +4,7 @@
     // https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores
     // note the comments about shorthand import/usage
     import {currentParent} from "$lib/components/stores"
+    import {currentTitle} from "$lib/components/stores"
     /** this is data from ID Games API */
     export let data;
     $: data = data;
@@ -33,6 +34,9 @@
             parentTitle = this.getAttribute("data-title");
             parentTitle = parentTitle
             $currentParent = this.getAttribute("data-title");
+
+            // and set the currentTitle
+            $currentTitle = this.getAttribute("data-title")
         }
     }
     
