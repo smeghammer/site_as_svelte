@@ -13,8 +13,16 @@
     import {IDGamesDownloadTree} from "$lib/components/stores" // IDGamesDownloadKeyedList
     // import { createEventDispatcher } from "svelte";
     // https://learn.svelte.dev/tutorial/writable-stores
+
+    // see https://dev.to/jdgamble555/the-unwritten-svelte-stores-guide-47la
+    // This explicitly talks about the store object methods set() and get() methods as well as the subscribe() method.
+    // So HERE, I can build a variable and then SET the store tro that value. I Should them be able to GET the value in
+    // the bc component. 
     import { IDGamesDownloadKeyedList } from "$lib/components/stores"
 
+    // build this, and then use it as a value for the store, using the SET() method
+    // https://dev.to/jdgamble555/the-unwritten-svelte-stores-guide-47la
+    let browseHistoryData = {}
 
     /** this is data from ID Games API */
     export let data;
@@ -26,21 +34,36 @@
     // console.log($IDGamesDownloadTree)
     // Hmmmm.... this definitely runs twice...
     // and can I do this (https://learn.svelte.dev/tutorial/writable-stores) here - on load rather than a called function?
-    $: {
-        console.log(data.currentId);
-        if(!IDGamesDownloadKeyedList[data.currentId]){
-            let parent = parseInt($page.params['id']);
-            if(data.currentId === 0){
-                parent = -1
-            }
-            IDGamesDownloadKeyedList[data.currentId] = { "parent":parent,"dir":data.data.content.dir, "file":data.data.content.file}
-        }
-        else{
-            console.log(data.currentId," already stored");
-        }
-    }
-    console.log($IDGamesDownloadKeyedList)
-    
+    // $: {
+    //     console.log(data);
+    //     if(!browseHistoryData[data.currentId]){
+    //         let parent = parseInt($page.params['id']);
+    //         if(data.currentId === 0){
+    //             parent = -1
+    //         }
+    //         browseHistoryData[data.currentId] = { "parent":parent,"dir":data.data.content.dir, "file":data.data.content.file}
+    //     }
+    //     else{
+    //         console.log(data.currentId," already stored");
+    //     }
+
+
+    //     // console.log(data.currentId);
+    //     // if(!IDGamesDownloadKeyedList[data.currentId]){
+    //     //     let parent = parseInt($page.params['id']);
+    //     //     if(data.currentId === 0){
+    //     //         parent = -1
+    //     //     }
+    //     //     IDGamesDownloadKeyedList[data.currentId] = { "parent":parent,"dir":data.data.content.dir, "file":data.data.content.file}
+    //     // }
+    //     // else{
+    //     //     console.log(data.currentId," already stored");
+    //     // }
+    // }
+    // console.log($IDGamesDownloadKeyedList)
+    // now SET this value to the store variable:
+    IDGamesDownloadKeyedList.set(browseHistoryData);
+    console.log($IDGamesDownloadKeyedList,browseHistoryData)
 
     /** 
      * there is a 'feature' of this data such that a SINGLE directory entry is actually
@@ -99,14 +122,25 @@
             // recurse(parseInt(this.getAttribute("data-parentid")), $IDGamesDownloadTree, {"id":data.currentId, "title":$currentTitle, "dir":data.data.content.dir});
             // recurse(0, parseInt(this.getAttribute("data-parentid")), {"id":data.currentId, "title":$currentTitle, "dir":data.data.content.dir});
             // TEST
-            console.log("IN setParent HANDLER",data.data.content.dir);
+            console.log("IN setParent HANDLER",data, data.data.content.dir);
             // if(!IDGamesDownloadKeyedList[this.getAttribute("data-id")]){
             //     IDGamesDownloadKeyedList[this.getAttribute("data-id")] = { "dir":data.data.content.dir, "file":data.data.content.file} // <-- WTF IS `data` NOT REACTIVE HERE???
             // }
             // else{
             //     console.log("already stored");
             // }
-            console.log(IDGamesDownloadKeyedList)
+
+            // and now set the variable as per the load handler:
+            // this WORKS!!, but I still need to truncate the path in the BC component.
+            if(!browseHistoryData[this.getAttribute("data-id")]){
+                browseHistoryData[this.getAttribute("data-id")] = { "parent":data.currentId,"dir":data.data.content.dir, "file":data.data.content.file} // <-- WTF IS `data` NOT REACTIVE HERE???
+            }
+            else{
+                console.log("already stored");
+            }
+            // then set the store variable:
+            IDGamesDownloadKeyedList.set(browseHistoryData);
+            console.log($IDGamesDownloadKeyedList,browseHistoryData)
         }
     }
 

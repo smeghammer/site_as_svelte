@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { page } from "$app/stores"
     /** 
      * https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores
      * import my stores for BC and parent data, for READING in this component: */
@@ -7,16 +8,25 @@
     // https://learn.svelte.dev/tutorial/writable-stores
     import {IDGamesDownloadTree} from "$lib/components/stores"
     import {IDGamesDownloadKeyedList} from "$lib/components/stores"
+    import { onDestroy } from "svelte";
     
     $IDGamesDownloadTree = $IDGamesDownloadTree;    // ???????
 
-    $IDGamesDownloadKeyedList = $IDGamesDownloadKeyedList   // ?????WTF???
+    // $IDGamesDownloadKeyedList = $IDGamesDownloadKeyedList   // ?????WTF???
     let BCData = []
 
     // SUBSCRIBE to the store thing:
-    IDGamesDownloadKeyedList.subscribe( (value) => {
+    const unsubscribe = IDGamesDownloadKeyedList.subscribe( (value) => {
+        console.log("current value: ",value)
         BCData = value} 
     ) //this is the result of the methods on the components that SET the store?
+    onDestroy(unsubscribe);
+
+    $:{
+        const new_value = $IDGamesDownloadKeyedList
+        console.log(new_value);
+    }
+    
 
     //export let pathArray
     export let data;
@@ -131,7 +141,132 @@
 
     // does it work outside the reactive block? YES
     console.log("OUTSIDE: ", $currentParent) // <-- this is a STORE object if the $ is NOT USED. The key is the reactive $ syntax again...
+// lets check the store var here:
+$: {
+    console.log($IDGamesDownloadKeyedList);
+    for(const entry in $IDGamesDownloadKeyedList){
+        console.log('from PATH: ',entry,$IDGamesDownloadKeyedList[entry]);
+    }
+}
 
+// for markup condition
+// let counter=0;
+// and the function to call from the markup (see https://stackoverflow.com/questions/68393239/svelte-change-variable-value-inside-html-block)
+// const increment = () => counter++;
+
+
+/**
+ * for breadcrumb handling -
+ *  - for all - generate an array from IDGamesDownloadKeyedList with CURRENT page as tip.
+ *    work back up the object matching wheer parent = self
+ *  - on load, get current slug (which is the data key)
+ * 
+*/
+let finalData;
+$:{
+    let BC = []
+    /** this is the current slug - i.e. where we actually are. This will have an entry in the browse data */
+    let tip = $page.params['id']    // the dynamic route slug value (as a string)
+    console.log("STARTING AT TIP: ",tip);
+    // now find the corresponding key in the IDGamesDownloadKeyedList store:
+    // this needs to be two-level...
+
+    // let tipData = $IDGamesDownloadKeyedList[tip];
+    // console.log(tip, tipData);
+    /** 
+     * we need to initialise a variable to keep track of where we are as we dig out the path back to the
+     * root level. Note that ID 0 is not stored, so we assume that is root level. NOTE: I still need to get 
+     * the linktexts from the source component!!!
+     */
+    let currentParentId = tip
+
+    /** next, we iterate over the big data looking for the current value of currentParentId. Note that 
+     * `entry` is teh object key and corresponds to the slugs visited. So we match that against the current 
+     * tip:
+     */
+    for(const entry in $IDGamesDownloadKeyedList){
+        console.log("ENTRY IN BROWSE DATA: ",entry);
+        console.log("ENTRY IN CURRENT PARENT ID (FROM DATA)",currentParentId);
+        console.log("CURRENT ITEM IN BROWSE HISTORY OBJECT: ",$IDGamesDownloadKeyedList[entry])
+        // console.log("ENTRY IN METHOD CALL TO GET PARENT OF CURRENT: ",getParentObjectFromHistoryData(currentParentId))
+        // test. This needs to be CONDITIOAL on the current item
+        let nextBCData = $IDGamesDownloadKeyedList[entry];
+        nextBCData['id'] = parseInt(entry);
+        // BC.push($IDGamesDownloadKeyedList[entry])
+        BC.push(nextBCData);
+        
+        /** this is a call to a function that returns the parent of the current entry */
+        
+        /** for the current browse data ($IDGamesDownloadKeyedList[entry]) I need to set the NEXT one to be my immediate parent
+         * from the original data.
+         */
+        // let match = getParentObjectFromHistoryData(currentParentId)
+        // if(match){
+        //     if(entry === getParentObjectFromHistoryData(currentParentId).toString()){
+        //         console.log("MATCH: ",$IDGamesDownloadKeyedList[entry]);
+        //         currentParentId = entry['parent'];
+        //         // BC.push($IDGamesDownloadKeyedList[entry])
+        //     }
+        // }
+    }
+
+    // function getParentObjectFromHistoryData(id:string){
+    //     for(const entry in $IDGamesDownloadKeyedList){
+    //         //console.log(entry,id)
+    //         if(entry === id){
+    //             console.log("in here");
+    //             console.log($IDGamesDownloadKeyedList[entry]['parent']);
+    //             return($IDGamesDownloadKeyedList[entry]['parent']);
+    //             // BC.push($IDGamesDownloadKeyedList[entry])
+    //         }
+    //     } 
+    // }
+    console.log("CURRENT SLUG:",tip)
+    console.log("CALCULATED BC: ",BC)
+    console.log("ORIGINAL DATA:",$IDGamesDownloadKeyedList);
+
+    /** 
+     * that data is consistent! so I need to:
+     * 
+     *  - start with tip
+     *  - find matching entry for id=tip
+     *  - get THIS entry's parent
+     *  - find matching item where ID=parent above
+     *  - repeat until ID=0
+    */
+   // ARGH!!!!!!!!!!!!!!!!!!!!!!!
+    finalData = [];
+    let currentId = tip;
+    /** iteate and retrive the IDs (all) */
+    for(let a=0;a<BC.length;a++){
+        /** this doesn't work if the thing being compared is LAST */
+        console.log(BC[a],parseInt(currentId));
+        //appendToFinalData(BC[a]);
+        if(BC[a].id === parseInt(currentId)){
+            finalData.push(BC[a]);
+            currentId = BC[a]['parent']
+        }
+    }
+    console.log(finalData);
+    function appendToFinalData(bcEntry){
+        for(let a=0;a<BC.length;a++){
+            if(checkNotStoredAlready(bcEntry.id) && bcEntry.parent === BC[a].id){
+                finalData.push(BC[a]);
+            }
+        }
+    }
+    function checkNotStoredAlready(id){
+        for(let a=0;a<BC.length;a++){
+            if(id === BC[a].id){
+                return(false);
+            }
+        }
+        return(true);
+    }
+    finalData.reverse();
+    console.log(finalData);
+}
+//let finalData = finalData
 </script>
 <!-- 
     This component displays links to the data directories found at this API endpoint for a given
@@ -153,33 +288,42 @@
      
  -->
 <h3>Breadcrumb</h3>
-<!-- TEST: {$currentParent} TADA!! -->
-<!-- <div class="pure-menu pure-menu-horizontal">
-    <ul class="pure-menu-list">
-        {#each pathArray as thing}
-            <li class="pure-menu-item">
-                {#if thing.level < pathArray.length}
-                    <a href="/dwbrowser/{thing.id}" data-id="{thing.id}" data-level={thing.level} on:click={BCHandler}>{thing.level} - {thing.linktext||"Home"}</a>
-                {:else}
-                    {thing.level} - {thing.linktext||"Home"}
-                {/if}
-            </li>
-        {/each}
-    </ul>    
-</div> -->
 
-<!-- <div class="pure-menu pure-menu-horizontal"><p>STORE</p>
+<p>{$page.params['id']}</p>
+<div class="pure-menu pure-menu-horizontal"><p>STORE</p>
     <ul class="pure-menu-list">
-        {#each IDGamesDownloadKeyedList as thing}
+        {#if Object.keys($IDGamesDownloadKeyedList).length > 0}
+        <li class="pure-menu-item">
+            <a href="/dwbrowser/0" data-id="0" data-level="0" on:click={BCHandler}>Home</a>
+        </li>
+        {/if}
+        <!-- {#each Object.entries($IDGamesDownloadKeyedList) as thing} -->
+        <!--https://stackoverflow.com/questions/68393239/svelte-change-variable-value-inside-html-block -->
+        <!-- IT IS RTEVERSED!!!!! -->
+
+        {#each finalData as entry}
             <li class="pure-menu-item">
-                {#if thing.level < IDGamesDownloadKeyedList.length}
-                    <a href="/dwbrowser/{thing.id}" data-id="{thing.id}" data-level={thing.level} on:click={BCHandler}>{thing.level} - {thing.linktext||"Home"}</a>
-                {:else}
-                    {thing.level} - {thing.linktext||"Home"}
-                {/if}
+                <a href="/dwbrowser/{entry.id}" data-id="{entry.id}" data-level="" on:click={BCHandler}>{entry.id}</a>
             </li>
         {/each}
+
+        {#each Object.entries($IDGamesDownloadKeyedList) as id,i}
+            <!-- TOP COUNT{counter}<br /> -->
+            OBJ LENGTH{Object.keys($IDGamesDownloadKeyedList).length}<br />
+            <!-- see https://stackoverflow.com/questions/5223/length-of-a-javascript-object -->
+            <li class="pure-menu-item">
+                {console.log($IDGamesDownloadKeyedList,id)}
+                {#if i+1 < Object.keys($IDGamesDownloadKeyedList).length }
+                    <a href="/dwbrowser/{id}" data-id="{id}" data-level=level on:click={BCHandler}>{id}</a>
+                {:else}
+                    <b>{id}</b>
+                {/if}
+            </li>
+            <!-- INCREMENT IT{counter+i}<br /> -->
+            COUNT FROM LOOP{i}<br />
+            <!-- COUNT FROM COUNTER{counter}<br /> -->
+        {/each}
     </ul>    
-</div> -->
+</div>
 
 {console.log(IDGamesDownloadKeyedList)}
