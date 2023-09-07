@@ -1,10 +1,6 @@
 <script lang="ts">
     export let data;
 </script>
-
-<!-- this component will list individual items within the current directory. It is a WIP, and currently it just 
-lists the name of each item found. Eventyally, it will present download links -->
-<h3>Contents</h3>
 <!--
     a 'thing' looks like this:
 {
@@ -23,15 +19,24 @@ lists the name of each item found. Eventyally, it will present download links --
     "url": "https://www.doomworld.com/idgames/themes/hokuto",
     "idgamesurl": "idgames://themes/hokuto.zip"
 }
-
-TODO: Download link
+TODO: Make overlay to show the above details/description?
 -->
-
-{#if data.data && data.data.content && data.data.content.file && data.data.content.file[0]}
-    {#each data.data.content.file as thing}
-    <p>{thing.title} </p>
-    {/each}
+<h3>Downloads</h3>
+{#if data.data && data.data.content && data.data.content.file && Array.isArray(data.data.content.file)}
+    <ul>
+        {#each data.data.content.file as thing}
+            <li><a href="{thing.url}" title="{thing.title}" target="_blank">{thing.title}</a></li> 
+        {/each}
+    </ul>
+{:else if data.data && data.data.content && data.data.content.file && !Array.isArray(data.data.content.file)}
+    <ul>
+        <li>
+            <a href="{data.data.content.file.url}" title="{data.data.content.file.title}" target="_blank">{
+                data.data.content.file.title}
+            </a>
+        </li> 
+    </ul>
 {:else}
-<p>No entries for this path {data.data.content.file}</p>
+<p>No downloads in this sub-directory!</p>
 {/if}
 

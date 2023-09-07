@@ -12,6 +12,7 @@ export async function load({params}){
         const response = await fetch(`https://www.doomworld.com/idgames/api/api.php?out=json&action=getcontents&id=${id}`,{method:'GET'});
         //+params['slug']
         const responseData = await response.json()
+        
         return({"data":responseData,"currentId":id,"currentTitle":title})
     }
     catch(err){

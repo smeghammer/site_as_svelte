@@ -3,7 +3,20 @@
      * https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores
      * import my stores for BC and parent data, for READING in this component: */
     import {currentParent} from "$lib/components/stores"
-    // import { Server } from "@sveltejs/kit";
+
+    // https://learn.svelte.dev/tutorial/writable-stores
+    import {IDGamesDownloadTree} from "$lib/components/stores"
+    import {IDGamesDownloadKeyedList} from "$lib/components/stores"
+    
+    $IDGamesDownloadTree = $IDGamesDownloadTree;    // ???????
+
+    $IDGamesDownloadKeyedList = $IDGamesDownloadKeyedList   // ?????WTF???
+    let BCData = []
+
+    // SUBSCRIBE to the store thing:
+    IDGamesDownloadKeyedList.subscribe( (value) => {
+        BCData = value} 
+    ) //this is the result of the methods on the components that SET the store?
 
     //export let pathArray
     export let data;
@@ -12,68 +25,70 @@
 
     let pathArray:any[] = []    //to improve
     $: pathArray = pathArray
-    let level:number = 0
-    $: {    // REACTIVE BLOCKS ARE KEY!!!!!
-        // why is this running twice? it is running BEFORE and then AFTER $currentParent is changed
-        console.log("[path comp] currentId: ",data.currentId)
-        if($currentParent){ // it starts undefined
-            /*** 
-             * This is my data for building the BC:
-             * hacky!! 
-             * The problem is that this block runs TWICE for each click - once BEFORE the ID is changed to the new one, and
-             * once AFTER it has been obtained from the click event. I only want the SECOND occurrence (i.e. the new item ID)
-             * so I am checking for the existence of the ID here in the array before I append. This WORKS, but seems like a very
-             * hacky way to do it. Ideally I want to know WHY it runs twice, and how to 'properly' suppress it.
-             *  */ 
-            let append = true;
-            // let prior_counter = 0
-            for(let x=0;x<pathArray.length;x++){
-                if(pathArray[x].id === data.currentId){
-                    append = false;
-                }
-                /** 
-                 * The other issue is that on browsing back down the breadcrumb, I cannot reset the BC array as I need to (remove all 
-                 * higher ones, reset tip to linktext only). There is a mismatch somewhere between the building of the pathArray and 
-                 * the subsequent truncation of it here. It appears that teh reactivity needed(?) to ensure the functionality works is
-                 * somehow also building the array BEFORE it gets in this function! 
-                 * 
-                 * So, can I post-process here to REMOVE any items that are not sequential?? It seems not, because the BC array has ALREADY 
-                 * been appended to with the updated route based on the navigation.*/
-                // console.log(pathArray[x].level, prior_counter)
-                // if(pathArray[x].level !== prior_counter+1){
-                //     console.log("level not sequential");
-                //     append = false;
-                // }
-                // prior_counter++;
-            }
-            if(append){
-                console.log($currentParent.split(/\//g)[$currentParent.split(/\//g).length-2])
-                /**  I want just the trailing string. The exact format of the name warrants this: */
-                level++;
-                pathArray.push({
-                    id: data.currentId, 
-                    linktext: $currentParent.split(/\//g)[$currentParent.split(/\//g).length-2],
-                    level: level
-                });
-            }
-            console.log("END OF REACTIVE BLOCK: ",pathArray);
-        }
+    // let level:number = 0
+    // $: {    // REACTIVE BLOCKS ARE KEY!!!!!
+    //     // why is this running twice? it is running BEFORE and then AFTER $currentParent is changed
+    //     console.log("[path comp] currentId: ",data.currentId)
+    //     if($currentParent){ // it starts undefined
+    //         /*** 
+    //          * This is my data for building the BC:
+    //          * hacky!! 
+    //          * The problem is that this block runs TWICE for each click - once BEFORE the ID is changed to the new one, and
+    //          * once AFTER it has been obtained from the click event. I only want the SECOND occurrence (i.e. the new item ID)
+    //          * so I am checking for the existence of the ID here in the array before I append. This WORKS, but seems like a very
+    //          * hacky way to do it. Ideally I want to know WHY it runs twice, and how to 'properly' suppress it.
+    //          *  */ 
+    //         let append = true;
+    //         // let prior_counter = 0
+    //         for(let x=0;x<pathArray.length;x++){
+    //             if(pathArray[x].id === data.currentId){
+    //                 append = false;
+    //             }
+    //             /** 
+    //              * The other issue is that on browsing back down the breadcrumb, I cannot reset the BC array as I need to (remove all 
+    //              * higher ones, reset tip to linktext only). There is a mismatch somewhere between the building of the pathArray and 
+    //              * the subsequent truncation of it here. It appears that teh reactivity needed(?) to ensure the functionality works is
+    //              * somehow also building the array BEFORE it gets in this function! 
+    //              * 
+    //              * So, can I post-process here to REMOVE any items that are not sequential?? It seems not, because the BC array has ALREADY 
+    //              * been appended to with the updated route based on the navigation.*/
+    //             // console.log(pathArray[x].level, prior_counter)
+    //             // if(pathArray[x].level !== prior_counter+1){
+    //             //     console.log("level not sequential");
+    //             //     append = false;
+    //             // }
+    //             // prior_counter++;
+    //         }
+    //         if(append){
+    //             console.log($currentParent.split(/\//g)[$currentParent.split(/\//g).length-2])
+    //             /**  I want just the trailing string. The exact format of the name warrants this: */
+    //             level++;
+    //             pathArray.push({
+    //                 id: data.currentId, 
+    //                 linktext: $currentParent.split(/\//g)[$currentParent.split(/\//g).length-2],
+    //                 level: level
+    //             });
+    //         }
+    //         console.log("END OF REACTIVE BLOCK: ",pathArray);
+    //     }
         
-        console.log(pathArray);
-        console.log(pathArray.length);
-        console.log(pathArray[pathArray.length-1]);
-        console.log(data.currentId);
-        pathArray = pathArray;     // <-- THIS IS KEY HERE! NO, REALLY! This self-assignment ensures it is reactive. WTF??
-        console.log("INSIDE: ",$currentParent) // <-- this is a STORE object if teh $ is NOT USED. The key is the reactive $ syntax again...
-        if(pathArray.length > 1){
-            console.log(pathArray[pathArray.length-1].level,pathArray[pathArray.length-2].level);
-            // again, hacky:
-            if(pathArray && (pathArray[pathArray.length-1].level > pathArray[pathArray.length-2].level + 1)){
-                console.log('popping...')
-                pathArray.pop()
-            }
-        }
-    }
+        console.log($IDGamesDownloadKeyedList)
+        // console.log(pathArray);
+        // console.log(pathArray.length);
+        // console.log(pathArray[pathArray.length-1]);
+        // console.log(data.currentId);
+        // pathArray = pathArray;     // <-- THIS IS KEY HERE! NO, REALLY! This self-assignment ensures it is reactive. WTF??
+        // console.log("INSIDE: ",$currentParent) // <-- this is a STORE object if teh $ is NOT USED. The key is the reactive $ syntax again...
+        // if(pathArray.length > 1){
+        //     console.log(pathArray[pathArray.length-1].level,pathArray[pathArray.length-2].level);
+        //     // again, hacky:
+        //     if(pathArray && (pathArray[pathArray.length-1].level > pathArray[pathArray.length-2].level + 1)){
+        //         console.log('popping...')
+        //         pathArray.pop()
+        //         // I won't need this - I will just need the ID and walk back up my tree...
+        //     }
+        // }
+    // }
 
     /** 
      * this needs to truncate the path array at the given depth. This is why I appended a data-depth attribute to the navigation
@@ -85,22 +100,22 @@
         console.log("bc handler",this.getAttribute('data-id'),this.getAttribute('data-level')," clicked")
         //  pathArray = pathArray.slice(0, parseInt(this.getAttribute('data-level'))-1); // this doesn't work properly...
         
-        let newPathArray = [];
-        let current_level = parseInt(this.getAttribute('data-level'));
-        for(let a=0;a<pathArray.length;a++){
-            // hmm... the order is correct (?) so I can stop on discovering a match? Also doesn't work as expected.:
-            // if(pathArray[a].id){
-            //     break;
-            // }
-            /** collect path BEFORE the specified level: */
-            //if(pathArray[a].level < parseInt(this.getAttribute('data-level'))){
-            if(pathArray[a].level < current_level){
-                newPathArray.push(pathArray[a]);
-            }
-            console.log("BEFORE ASSIGNMENT: ",newPathArray, pathArray);
-            pathArray = newPathArray;
-            console.log("END OF FUNCTION CALL, AFTER ASSIGNMENT: ",newPathArray, pathArray);
-        }
+        // let newPathArray = [];
+        // let current_level = parseInt(this.getAttribute('data-level'));
+        // for(let a=0;a<pathArray.length;a++){
+        //     // hmm... the order is correct (?) so I can stop on discovering a match? Also doesn't work as expected.:
+        //     // if(pathArray[a].id){
+        //     //     break;
+        //     // }
+        //     /** collect path BEFORE the specified level: */
+        //     //if(pathArray[a].level < parseInt(this.getAttribute('data-level'))){
+        //     if(pathArray[a].level < current_level){
+        //         newPathArray.push(pathArray[a]);
+        //     }
+        //     console.log("BEFORE ASSIGNMENT: ",newPathArray, pathArray);
+        //     pathArray = newPathArray;
+        //     console.log("END OF FUNCTION CALL, AFTER ASSIGNMENT: ",newPathArray, pathArray);
+        // }
         
         /** the issue is here. 
          * On being called, this function correctly processes the array according to the code logic, 
@@ -139,7 +154,7 @@
  -->
 <h3>Breadcrumb</h3>
 <!-- TEST: {$currentParent} TADA!! -->
-<div class="pure-menu pure-menu-horizontal">
+<!-- <div class="pure-menu pure-menu-horizontal">
     <ul class="pure-menu-list">
         {#each pathArray as thing}
             <li class="pure-menu-item">
@@ -151,4 +166,20 @@
             </li>
         {/each}
     </ul>    
-</div>
+</div> -->
+
+<!-- <div class="pure-menu pure-menu-horizontal"><p>STORE</p>
+    <ul class="pure-menu-list">
+        {#each IDGamesDownloadKeyedList as thing}
+            <li class="pure-menu-item">
+                {#if thing.level < IDGamesDownloadKeyedList.length}
+                    <a href="/dwbrowser/{thing.id}" data-id="{thing.id}" data-level={thing.level} on:click={BCHandler}>{thing.level} - {thing.linktext||"Home"}</a>
+                {:else}
+                    {thing.level} - {thing.linktext||"Home"}
+                {/if}
+            </li>
+        {/each}
+    </ul>    
+</div> -->
+
+{console.log(IDGamesDownloadKeyedList)}
