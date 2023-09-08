@@ -2,269 +2,99 @@
     import { page } from "$app/stores"
     /** 
      * https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores
-     * import my stores for BC and parent data, for READING in this component: */
-    import {currentParent} from "$lib/components/stores"
+     * import my stores for BC and parent data, for READING in this component: 
+     * NOTE: I'm using the shorthand version of stores syntax. (ref to get)
+     * */
 
     // https://learn.svelte.dev/tutorial/writable-stores
     import {IDGamesDownloadTree} from "$lib/components/stores"
     import {IDGamesDownloadKeyedList} from "$lib/components/stores"
     import { onDestroy } from "svelte";
-    
     $IDGamesDownloadTree = $IDGamesDownloadTree;    // ???????
-
-    // $IDGamesDownloadKeyedList = $IDGamesDownloadKeyedList   // ?????WTF???
-    let BCData = []
-
-    // SUBSCRIBE to the store thing:
-    const unsubscribe = IDGamesDownloadKeyedList.subscribe( (value) => {
-        console.log("current value: ",value)
-        BCData = value} 
-    ) //this is the result of the methods on the components that SET the store?
-    onDestroy(unsubscribe);
-
-    $:{
-        const new_value = $IDGamesDownloadKeyedList
-        console.log(new_value);
-    }
-    
-
-    //export let pathArray
+   
     export let data;
     $: data = data;
-    // console.log(data.currentId, data.data)
 
     let pathArray:any[] = []    //to improve
     $: pathArray = pathArray
-    // let level:number = 0
-    // $: {    // REACTIVE BLOCKS ARE KEY!!!!!
-    //     // why is this running twice? it is running BEFORE and then AFTER $currentParent is changed
-    //     console.log("[path comp] currentId: ",data.currentId)
-    //     if($currentParent){ // it starts undefined
-    //         /*** 
-    //          * This is my data for building the BC:
-    //          * hacky!! 
-    //          * The problem is that this block runs TWICE for each click - once BEFORE the ID is changed to the new one, and
-    //          * once AFTER it has been obtained from the click event. I only want the SECOND occurrence (i.e. the new item ID)
-    //          * so I am checking for the existence of the ID here in the array before I append. This WORKS, but seems like a very
-    //          * hacky way to do it. Ideally I want to know WHY it runs twice, and how to 'properly' suppress it.
-    //          *  */ 
-    //         let append = true;
-    //         // let prior_counter = 0
-    //         for(let x=0;x<pathArray.length;x++){
-    //             if(pathArray[x].id === data.currentId){
-    //                 append = false;
-    //             }
-    //             /** 
-    //              * The other issue is that on browsing back down the breadcrumb, I cannot reset the BC array as I need to (remove all 
-    //              * higher ones, reset tip to linktext only). There is a mismatch somewhere between the building of the pathArray and 
-    //              * the subsequent truncation of it here. It appears that teh reactivity needed(?) to ensure the functionality works is
-    //              * somehow also building the array BEFORE it gets in this function! 
-    //              * 
-    //              * So, can I post-process here to REMOVE any items that are not sequential?? It seems not, because the BC array has ALREADY 
-    //              * been appended to with the updated route based on the navigation.*/
-    //             // console.log(pathArray[x].level, prior_counter)
-    //             // if(pathArray[x].level !== prior_counter+1){
-    //             //     console.log("level not sequential");
-    //             //     append = false;
-    //             // }
-    //             // prior_counter++;
-    //         }
-    //         if(append){
-    //             console.log($currentParent.split(/\//g)[$currentParent.split(/\//g).length-2])
-    //             /**  I want just the trailing string. The exact format of the name warrants this: */
-    //             level++;
-    //             pathArray.push({
-    //                 id: data.currentId, 
-    //                 linktext: $currentParent.split(/\//g)[$currentParent.split(/\//g).length-2],
-    //                 level: level
-    //             });
-    //         }
-    //         console.log("END OF REACTIVE BLOCK: ",pathArray);
-    //     }
-        
-        console.log($IDGamesDownloadKeyedList)
-        // console.log(pathArray);
-        // console.log(pathArray.length);
-        // console.log(pathArray[pathArray.length-1]);
-        // console.log(data.currentId);
-        // pathArray = pathArray;     // <-- THIS IS KEY HERE! NO, REALLY! This self-assignment ensures it is reactive. WTF??
-        // console.log("INSIDE: ",$currentParent) // <-- this is a STORE object if teh $ is NOT USED. The key is the reactive $ syntax again...
-        // if(pathArray.length > 1){
-        //     console.log(pathArray[pathArray.length-1].level,pathArray[pathArray.length-2].level);
-        //     // again, hacky:
-        //     if(pathArray && (pathArray[pathArray.length-1].level > pathArray[pathArray.length-2].level + 1)){
-        //         console.log('popping...')
-        //         pathArray.pop()
-        //         // I won't need this - I will just need the ID and walk back up my tree...
-        //     }
-        // }
-    // }
+    /** this is my store data: */
+    console.log($IDGamesDownloadKeyedList)
 
-    /** 
-     * this needs to truncate the path array at the given depth. This is why I appended a data-depth attribute to the navigation
-     * elements:  
-     * However, it is not working as expected. See comments in the reactive block above. It appears that the reactive block above is 
-     * running BEFORE this function is called
-     * */
-    function BCHandler(){
-        console.log("bc handler",this.getAttribute('data-id'),this.getAttribute('data-level')," clicked")
-        //  pathArray = pathArray.slice(0, parseInt(this.getAttribute('data-level'))-1); // this doesn't work properly...
-        
-        // let newPathArray = [];
-        // let current_level = parseInt(this.getAttribute('data-level'));
-        // for(let a=0;a<pathArray.length;a++){
-        //     // hmm... the order is correct (?) so I can stop on discovering a match? Also doesn't work as expected.:
-        //     // if(pathArray[a].id){
-        //     //     break;
-        //     // }
-        //     /** collect path BEFORE the specified level: */
-        //     //if(pathArray[a].level < parseInt(this.getAttribute('data-level'))){
-        //     if(pathArray[a].level < current_level){
-        //         newPathArray.push(pathArray[a]);
-        //     }
-        //     console.log("BEFORE ASSIGNMENT: ",newPathArray, pathArray);
-        //     pathArray = newPathArray;
-        //     console.log("END OF FUNCTION CALL, AFTER ASSIGNMENT: ",newPathArray, pathArray);
-        // }
-        
-        /** the issue is here. 
-         * On being called, this function correctly processes the array according to the code logic, 
-         * 
-         * BUT:
-         * 
-         * the pathArray has ALREADY BEEN APPENDED TO by the reactive block above. So we end up with
-         * a truncated path that has an orphaned tip. This screws it up...
-         * 
-         * A possible solution is to pass a URL parameter??? But does this remain 'sveltekitty'? Also doesn't work.
-         *  */
-    }
-
-    // does it work outside the reactive block? YES
-    console.log("OUTSIDE: ", $currentParent) // <-- this is a STORE object if the $ is NOT USED. The key is the reactive $ syntax again...
-// lets check the store var here:
-$: {
-    console.log($IDGamesDownloadKeyedList);
-    for(const entry in $IDGamesDownloadKeyedList){
-        console.log('from PATH: ',entry,$IDGamesDownloadKeyedList[entry]);
-    }
-}
-
-// for markup condition
-// let counter=0;
 // and the function to call from the markup (see https://stackoverflow.com/questions/68393239/svelte-change-variable-value-inside-html-block)
-// const increment = () => counter++;
-
 
 /**
  * for breadcrumb handling -
  *  - for all - generate an array from IDGamesDownloadKeyedList with CURRENT page as tip.
  *    work back up the object matching wheer parent = self
  *  - on load, get current slug (which is the data key)
- * 
 */
-let finalData;
+let finalBreadcrumbData:any[];
 $:{
-    let BC = []
+    let browseData = []
     /** this is the current slug - i.e. where we actually are. This will have an entry in the browse data */
     let tip = $page.params['id']    // the dynamic route slug value (as a string)
     console.log("STARTING AT TIP: ",tip);
     // now find the corresponding key in the IDGamesDownloadKeyedList store:
     // this needs to be two-level...
 
-    // let tipData = $IDGamesDownloadKeyedList[tip];
-    // console.log(tip, tipData);
     /** 
      * we need to initialise a variable to keep track of where we are as we dig out the path back to the
      * root level. Note that ID 0 is not stored, so we assume that is root level. NOTE: I still need to get 
      * the linktexts from the source component!!!
-     */
-    let currentParentId = tip
-
-    /** next, we iterate over the big data looking for the current value of currentParentId. Note that 
+     * 
+     * next, we iterate over the big data looking for the current value of currentParentId. Note that 
      * `entry` is teh object key and corresponds to the slugs visited. So we match that against the current 
      * tip:
+     * 
+     * TODO: The following block is probably redundant.
+     * I don't necessarily need to do this here - all I am doing ATM is transforming ALL data - so BC isn't
+     * really a breadcrumb, just the browse history data re-formatted:
      */
     for(const entry in $IDGamesDownloadKeyedList){
-        console.log("ENTRY IN BROWSE DATA: ",entry);
-        console.log("ENTRY IN CURRENT PARENT ID (FROM DATA)",currentParentId);
-        console.log("CURRENT ITEM IN BROWSE HISTORY OBJECT: ",$IDGamesDownloadKeyedList[entry])
-        // console.log("ENTRY IN METHOD CALL TO GET PARENT OF CURRENT: ",getParentObjectFromHistoryData(currentParentId))
-        // test. This needs to be CONDITIOAL on the current item
-        let nextBCData = $IDGamesDownloadKeyedList[entry];
-        nextBCData['id'] = parseInt(entry);
-        // BC.push($IDGamesDownloadKeyedList[entry])
-        BC.push(nextBCData);
-        
-        /** this is a call to a function that returns the parent of the current entry */
-        
-        /** for the current browse data ($IDGamesDownloadKeyedList[entry]) I need to set the NEXT one to be my immediate parent
-         * from the original data.
-         */
-        // let match = getParentObjectFromHistoryData(currentParentId)
-        // if(match){
-        //     if(entry === getParentObjectFromHistoryData(currentParentId).toString()){
-        //         console.log("MATCH: ",$IDGamesDownloadKeyedList[entry]);
-        //         currentParentId = entry['parent'];
-        //         // BC.push($IDGamesDownloadKeyedList[entry])
-        //     }
-        // }
+        let nextBrowseDatum = $IDGamesDownloadKeyedList[entry];
+        nextBrowseDatum['id'] = parseInt(entry);
+        browseData.push(nextBrowseDatum);
     }
 
-    // function getParentObjectFromHistoryData(id:string){
-    //     for(const entry in $IDGamesDownloadKeyedList){
-    //         //console.log(entry,id)
-    //         if(entry === id){
-    //             console.log("in here");
-    //             console.log($IDGamesDownloadKeyedList[entry]['parent']);
-    //             return($IDGamesDownloadKeyedList[entry]['parent']);
-    //             // BC.push($IDGamesDownloadKeyedList[entry])
-    //         }
-    //     } 
-    // }
-    console.log("CURRENT SLUG:",tip)
-    console.log("CALCULATED BC: ",BC)
-    console.log("ORIGINAL DATA:",$IDGamesDownloadKeyedList);
-
     /** 
-     * that data is consistent! so I need to:
+     * tha browse data i generate is consistent! so to get the true breadcrumb I need to:
      * 
-     *  - start with tip
+     *  - start with tip (i.e. current slug ID value)
      *  - find matching entry for id=tip
      *  - get THIS entry's parent
      *  - find matching item where ID=parent above
      *  - repeat until ID=0
     */
-   // ARGH!!!!!!!!!!!!!!!!!!!!!!!
-    finalData = [];
+    finalBreadcrumbData = [];
     let currentId = tip;
     /** iteate and retrive the IDs (all) */
-    for(let a=0;a<BC.length;a++){
-        /** this doesn't work if the thing being compared is LAST */
-        console.log(BC[a],parseInt(currentId));
+    for(let a=0;a<browseData.length;a++){
+        /** this doesn't work if the thing being compared is LAST? */
+        // console.log(BC[a],parseInt(currentId));
         //appendToFinalData(BC[a]);
-        if(BC[a].id === parseInt(currentId)){
-            finalData.push(BC[a]);
-            currentId = BC[a]['parent']
+        if(browseData[a].id === parseInt(currentId)){
+            finalBreadcrumbData.push(browseData[a]);
+            currentId = browseData[a]['parent']
         }
     }
-    console.log(finalData);
+    // console.log(finalData);
     function appendToFinalData(bcEntry){
-        for(let a=0;a<BC.length;a++){
-            if(checkNotStoredAlready(bcEntry.id) && bcEntry.parent === BC[a].id){
-                finalData.push(BC[a]);
+        for(let a=0;a<browseData.length;a++){
+            if(checkNotStoredAlready(bcEntry.id) && bcEntry.parent === browseData[a].id){
+                finalBreadcrumbData.push(browseData[a]);
             }
         }
     }
     function checkNotStoredAlready(id){
-        for(let a=0;a<BC.length;a++){
-            if(id === BC[a].id){
+        for(let a=0;a<browseData.length;a++){
+            if(id === browseData[a].id){
                 return(false);
             }
         }
         return(true);
     }
-    finalData.reverse();
-    console.log(finalData);
+    finalBreadcrumbData.reverse();
+    console.log(finalBreadcrumbData);
 }
 //let finalData = finalData
 </script>
@@ -279,13 +109,9 @@ $:{
     API doesn't declare parent for a given data set, but mainly I think because I am trying to use
     sveltekit incorrectly? 
     
-    The BCHandler is correctly called, BUT the manipulation of the 'pathArray' array is not happening as  
-    I am expecting. 
-
     Simplistically, I am building a horizontal path menu (a breadcrumb) based on the browsing history
     when using the output from the IDGamesListFiles.svelte component. This path is built up correctly
     based on a setParent() handler function.
-     
  -->
 <h3>Breadcrumb</h3>
 
@@ -294,36 +120,32 @@ $:{
     <ul class="pure-menu-list">
         {#if Object.keys($IDGamesDownloadKeyedList).length > 0}
         <li class="pure-menu-item">
-            <a href="/dwbrowser/0" data-id="0" data-level="0" on:click={BCHandler}>Home</a>
+            <!-- <a href="/dwbrowser/0" data-id="0" data-level="0" on:click={BCHandler}>Home</a> -->
+            <a href="/dwbrowser/0" data-id="0" data-level="0">ID Games root</a>
+        </li>
+        {:else if Object.keys($IDGamesDownloadKeyedList).length === 1}
+        <li class="pure-menu-item">
+            ID Games root
         </li>
         {/if}
-        <!-- {#each Object.entries($IDGamesDownloadKeyedList) as thing} -->
-        <!--https://stackoverflow.com/questions/68393239/svelte-change-variable-value-inside-html-block -->
-        <!-- IT IS RTEVERSED!!!!! -->
-
-        {#each finalData as entry}
+        <!-- iterate of the the calculated breadcrumb array -->
+        {#each finalBreadcrumbData as entry}
             <li class="pure-menu-item">
-                <a href="/dwbrowser/{entry.id}" data-id="{entry.id}" data-level="" on:click={BCHandler}>{entry.id}</a>
+                <!-- <a href="/dwbrowser/{entry.id}" data-id="{entry.id}" data-level="" on:click={BCHandler}>{entry.id}</a> -->
+                <a href="/dwbrowser/{entry.id}" data-id="{entry.id}" data-level="" >{entry.id}</a>
             </li>
         {/each}
-
-        {#each Object.entries($IDGamesDownloadKeyedList) as id,i}
-            <!-- TOP COUNT{counter}<br /> -->
-            OBJ LENGTH{Object.keys($IDGamesDownloadKeyedList).length}<br />
-            <!-- see https://stackoverflow.com/questions/5223/length-of-a-javascript-object -->
+        
+        <!-- this is iterating over the entire browse history data, so will be removed -->
+        <!-- {#each Object.entries($IDGamesDownloadKeyedList) as id,i}
             <li class="pure-menu-item">
-                {console.log($IDGamesDownloadKeyedList,id)}
-                {#if i+1 < Object.keys($IDGamesDownloadKeyedList).length }
-                    <a href="/dwbrowser/{id}" data-id="{id}" data-level=level on:click={BCHandler}>{id}</a>
+                {#if i+1 < Object.keys($IDGamesDownloadKeyedList).length } -->
+                    <!-- <a href="/dwbrowser/{id}" data-id="{id}" data-level=level on:click={BCHandler}>{id}</a> -->
+                    <!-- <a href="/dwbrowser/{id}" data-id="{id}" data-level=level>{id}</a>
                 {:else}
                     <b>{id}</b>
                 {/if}
             </li>
-            <!-- INCREMENT IT{counter+i}<br /> -->
-            COUNT FROM LOOP{i}<br />
-            <!-- COUNT FROM COUNTER{counter}<br /> -->
-        {/each}
+        {/each} -->
     </ul>    
 </div>
-
-{console.log(IDGamesDownloadKeyedList)}
