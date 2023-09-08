@@ -7,18 +7,18 @@
      * */
 
     // https://learn.svelte.dev/tutorial/writable-stores
-    import {IDGamesDownloadTree} from "$lib/components/stores"
+    // import {IDGamesDownloadTree} from "$lib/components/stores"
     import {IDGamesDownloadKeyedList} from "$lib/components/stores"
-    import { onDestroy } from "svelte";
-    $IDGamesDownloadTree = $IDGamesDownloadTree;    // ???????
+    // import { onDestroy } from "svelte";
+    //  $IDGamesDownloadTree = $IDGamesDownloadTree;    // ???????
    
-    export let data;
-    $: data = data;
+    // export let data;
+    // $: data = data;
 
-    let pathArray:any[] = []    //to improve
-    $: pathArray = pathArray
+    // let pathArray:any[] = []    //to improve
+    // $: pathArray = pathArray
     /** this is my store data: */
-    console.log($IDGamesDownloadKeyedList)
+    // console.log($IDGamesDownloadKeyedList)
 
 // and the function to call from the markup (see https://stackoverflow.com/questions/68393239/svelte-change-variable-value-inside-html-block)
 
@@ -30,6 +30,7 @@
 */
 let finalBreadcrumbData:any[];
 $:{
+    console.log("am i called twice???")
     let browseData = []
     /** this is the current slug - i.e. where we actually are. This will have an entry in the browse data */
     let tip = $page.params['id']    // the dynamic route slug value (as a string)
@@ -68,11 +69,18 @@ $:{
     finalBreadcrumbData = [];
     let currentId = tip;
     /** iteate and retrive the IDs (all) */
+    console.log("BROWSE DATA:", browseData);
     for(let a=0;a<browseData.length;a++){
         /** this doesn't work if the thing being compared is LAST? */
         // console.log(BC[a],parseInt(currentId));
         //appendToFinalData(BC[a]);
-        if(browseData[a].id === parseInt(currentId)){
+        /**
+         * 
+         * 
+        */
+
+        if(browseData[a].id === parseInt(currentId) && parseInt(currentId) >= 0){
+            // console.log("IN PATH BUILD ROUTINE:",currentId,tip);
             finalBreadcrumbData.push(browseData[a]);
             currentId = browseData[a]['parent']
         }
@@ -94,8 +102,20 @@ $:{
         return(true);
     }
     finalBreadcrumbData.reverse();
-    console.log(finalBreadcrumbData);
+    // console.log(finalBreadcrumbData);
 }
+
+/** rather than having a reactive block called twice, does this only get called once??? */
+function BCHandler(){
+    // console.log("BREADCRUMB HANDLER CLICK EVENT:");
+
+    // console.log();
+
+
+
+}
+
+
 //let finalData = finalData
 </script>
 <!-- 
@@ -118,12 +138,12 @@ $:{
 <p>{$page.params['id']}</p>
 <div class="pure-menu pure-menu-horizontal"><p>STORE</p>
     <ul class="pure-menu-list">
-        {#if Object.keys($IDGamesDownloadKeyedList).length > 0}
+        {#if finalBreadcrumbData.length > 0}
         <li class="pure-menu-item">
-            <!-- <a href="/dwbrowser/0" data-id="0" data-level="0" on:click={BCHandler}>Home</a> -->
-            <a href="/dwbrowser/0" data-id="0" data-level="0">ID Games root</a>
+            <a href="/dwbrowser/0" data-id="0" data-level="0" on:click={BCHandler}>Home</a>
+            <!-- <a href="/dwbrowser/0" data-id="0" data-level="0">ID Games root</a> -->
         </li>
-        {:else if Object.keys($IDGamesDownloadKeyedList).length === 1}
+        {:else if finalBreadcrumbData === 1}
         <li class="pure-menu-item">
             ID Games root
         </li>
@@ -131,8 +151,8 @@ $:{
         <!-- iterate of the the calculated breadcrumb array -->
         {#each finalBreadcrumbData as entry}
             <li class="pure-menu-item">
-                <!-- <a href="/dwbrowser/{entry.id}" data-id="{entry.id}" data-level="" on:click={BCHandler}>{entry.id}</a> -->
-                <a href="/dwbrowser/{entry.id}" data-id="{entry.id}" data-level="" >{entry.id}</a>
+                <a href="/dwbrowser/{entry.id}" data-id="{entry.id}" data-level="" on:click={BCHandler}>{entry.id}</a>
+                <!-- <a href="/dwbrowser/{entry.id}" data-id="{entry.id}" data-level="" >{entry.id}</a> -->
             </li>
         {/each}
         

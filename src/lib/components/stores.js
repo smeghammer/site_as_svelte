@@ -21,4 +21,4 @@ export const IDGamesDownloadTree = writable({"id":0,"name":"/","dir":[],"file":[
 // that way I can match by key rather than iterate to find it:
 export const IDGamesDownloadList = writable({"id":0,"name":"/", "parent_id":-1, "child_ids":[], "file":[]});   // root level `file` is null, but this is the pattern
 // or:
-export const IDGamesDownloadKeyedList = writable({});   // root level `file` is null, but this is the pattern
+export const IDGamesDownloadKeyedList = writable({"0":{"id":1, "name":"/", "parent":-1,"dir":[], "file":[]}});   // root level `file` is null, but this is the pattern

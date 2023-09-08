@@ -20,7 +20,7 @@
     <h2>ID Games (slug)</h2>
 
     <!-- the path component needs to render links with incremental depth attribute values, so going BACK will reset -->
-    <IDGamesPath {data} />
+    <IDGamesPath />
     
     <!-- increment the depth on eack click. Requires that the currently rendered links have an appropriate attribute value set. -->
     <IDGamesListFiles {data }  />
