@@ -2,16 +2,13 @@
 
 Note I have included the back-end database code in /backend. This doesn't need to be in the same location as the sveltekit code, but it does require a mongoDB with suitable database. See below for deployment and running.
 
-
-This is all stored in my personal github account in repo [site_as_svelte](https://github.com/smeghammer/site_as_svelte).
-
 ## MongoDB back-end
 This is required to house the back-end data driving the `/maps` and `/snippets` dynamic routes, as well as the `/admin` route.
 
 This uses the existing standard Docker [mongoDB container](https://hub.docker.com/_/mongo) image.
 It is run on localhost with standard mongoDB port mapping. It also uses a volume for persistent storage on the local filesystem. To first build, run:
 
-`sudo docker run --name mongo -v /home/sjewitt/dev/mount/mongodata:/data/db -p 27017:27017 -d mongo:latest`
+`sudo docker run --name mongo -v /home/path/to/dev/mount/mongodata:/data/db -p 27017:27017 -d mongo:latest`
 
 The data may be loaded from a mongodump, found in `/data/mongodumps/[database]`.
 
@@ -26,8 +23,8 @@ Alternatively, a database can be manually created, called `smeghammer` (currentl
     "description" : "[string]",
     "imageUrl" : "[example image URL]", // to GH, e.g.: https://raw.githubusercontent.com/smeghammer/CardinalSin/master/screenshots/2.png
     "allImages" : [  // array of image URLs
-        [image URL],
-        [image URL]
+        "[image URL]",
+        "[image URL]"
     ],
     "slug" : "[slug path to entry]",  // dynamic slug path. 
     "IDGames_download" : "[URL string]"  // download location for map (optional)
@@ -45,7 +42,7 @@ Note this is not run in a virtual environment. Also note that the port mapping i
 
 Note: May need `sudo` if docker group membership not correct.
 
- - `>docker ps` - list running containers. May need `sudo` id docker gorup membership not correct
+ - `>docker ps` - list running containers. May need `sudo` id docker group membership not correct
  - `>docker run -it mongo bash` - start instance with interactive terminal (but see note above)
 
 
@@ -63,11 +60,11 @@ Note that the source code for this layer is stored in the [repo](https://github.
 
 initialise the venv in the deployment directory, if not already done:
 
-`> python3 -m venv  /home/sjewitt/tests/smegbackend/`
+`> python3 -m venv  /home/path/to/tests/smegbackend/`
 
 and activate it:
 
-`source /home/sjewitt/tests/smegbackend/bin/activate`
+`source /home/path/to/tests/smegbackend/bin/activate`
 
 Finally, it can be shut down with:
 
@@ -90,7 +87,7 @@ NOTE: make sure you do this once the venv is activated, otherwise this will inst
 
 From within the running venv, at the correct directory, simply run the `main.py` python module:
 
-`(smegbackend) sjewitt@sjewitt-Precision-3550:~/tests/smegbackend$ python3 main.py`
+`(smegbackend) user@machine:~/tests/smegbackend$ python3 main.py`
 
 Note the prefix brackets, indicating we are in the venv of the specified name.
 
