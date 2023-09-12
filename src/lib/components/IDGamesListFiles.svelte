@@ -1,22 +1,10 @@
 <script lang="ts">
-// https://linguinecode.com/post/how-to-access-sveltekit-dynamic-params-from-router
-import { page } from '$app/stores';
-
-// see https://kit.svelte.dev/docs/load#rerunning-load-functions-manual-invalidation
-import { invalidate, invalidateAll } from '$app/navigation';
-
-/** import my stores for BC and parent data, for WRITING in this component: */
-// import {breadcrumb} from "$app/stores"
 // https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores
 // note the comments about shorthand import/usage
 import {currentParent} from "$lib/components/stores"
 import {currentTitle} from "$lib/components/stores"
 
-// TEST:
-import {IDGamesDownloadTree} from "$lib/components/stores" // IDGamesDownloadKeyedList
-// import { createEventDispatcher } from "svelte";
 // https://learn.svelte.dev/tutorial/writable-stores
-
 // see https://dev.to/jdgamble555/the-unwritten-svelte-stores-guide-47la
 // This explicitly talks about the store object methods set() and get() methods as well as the subscribe() method.
 // So HERE, I can build a variable and then SET the store tro that value. I Should them be able to GET the value in
@@ -26,23 +14,13 @@ import { IDGamesDownloadKeyedList } from "$lib/components/stores"
 // build this, and then use it as a value for the store, using the SET() method
 // https://dev.to/jdgamble555/the-unwritten-svelte-stores-guide-47la
 // This needs to include the IDGames ROOT LEVEL! I'm sure it did before?
-let browseHistoryData = {}
 
 /** this is data from ID Games API */
+/** 
+ * See issue #2:
+ * https://github.com/smeghammer/site_as_svelte/issues/2 
+ */
 export let data;
-console.log("DATA AT TOP",data)
-
-
-// initialise the history data at root:
-if(!browseHistoryData["0"]){
-    console.log("initial populateion of browseHistoryData:")
-    browseHistoryData["0"] = { "id":data.currentId,"parent":-1,  "dir":data.data.content.dir, "file":data.data.content.file};
-}
-console.log(browseHistoryData["0"]);
-
-// $: data = data;
-// now SET this value to the store variable:
-IDGamesDownloadKeyedList.set(browseHistoryData); // not needed because it's initialised as this value.
 
 /** 
  * there is a 'feature' of this data such that a SINGLE directory entry is actually
@@ -50,11 +28,9 @@ IDGamesDownloadKeyedList.set(browseHistoryData); // not needed because it's init
  * so I need to refactor in that case, so the processing code works as intended: 
  *
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
-console.log(Array.isArray(data.data.content.dir))
 */
 
 export let parentTitle = "Root";
-// $:parentTitle = parentTitle;
 parentTitle = parentTitle;
 /**  this is where we are coming FROM. We need to retain the name so I can populate the BC - the ID Games API doesn't have
  * data about SELF.
@@ -70,10 +46,7 @@ parentTitle = parentTitle;
 */
 $currentParent = "/";
 //  this is called ONCE  -OK.
-// BUT: this is using STALE DATA!!!!! I need to run this AFTER the data is returned
 function setParent(){
-    invalidateAll();        //TEST
-    console.log("DATA IN CLICK HANDLER",data);
     /** 
      * because we may be navigating to the root of this section from elsewhere. 
      * */
@@ -82,29 +55,10 @@ function setParent(){
         parentTitle = parentTitle
         $currentParent = this.getAttribute("data-title");
         $currentTitle = this.getAttribute("data-title")
-
-        // and now set the variable as per the load handler:
-        // this WORKS!!, but I still need to truncate the path in the BC component.
-        if(!browseHistoryData[this.getAttribute("data-id")]){
-            browseHistoryData[this.getAttribute("data-id")] = { "parent":data.currentId,"dir":data.data.content.dir, "file":data.data.content.file} // <-- WTF IS `data` NOT REACTIVE HERE???
-        }
-        else{
-            console.log("already stored");
-        }
-        // then set the store variable:
-        IDGamesDownloadKeyedList.set(browseHistoryData);
-        console.log($IDGamesDownloadKeyedList,browseHistoryData)
     }
 }
-
-
-
 </script>
-
-<!-- test -->
-{console.log("DATA IN RENDER BLOCK",data)}
-
-<h3>Directories {$currentParent}</h3>
+<h3>Directories </h3>
 {#if data.data && data.data.content && data.data.content.dir && Array.isArray(data.data.content.dir)}  <!-- this condition may need to be tightened - I think it is currently excluding single-entry results-->
 <ul id="files_tree">
     {#each data.data.content.dir as thing}

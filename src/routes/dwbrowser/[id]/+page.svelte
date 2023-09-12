@@ -5,6 +5,8 @@
     export let data;
     $: data = data; //because we will pass additional args on browsing
 
+console.log("PAGE.SVELTE",data)
+
     /** 
      * see https://stackoverflow.com/questions/66698656/access-variable-in-a-component-updated-by-a-different-component-in-svelte 
      * to allow sharing vars between sibling components
@@ -20,7 +22,7 @@
     <h2>ID Games (slug)</h2>
 
     <!-- the path component needs to render links with incremental depth attribute values, so going BACK will reset -->
-    <IDGamesPath />
+    <IDGamesPath { data } />
     
     <!-- increment the depth on eack click. Requires that the currently rendered links have an appropriate attribute value set. -->
     <IDGamesListFiles {data }  />
