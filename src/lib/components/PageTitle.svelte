@@ -2,9 +2,11 @@
 // import linktextMapper from "$lib/data/linktextMapper.json";
 import { linktextMapper } from "$lib/data/linktextMapper";  // now typed in .TS file
 import { page } from "$app/stores";
-// import maps from "$lib/data/maps.json"; // I could get page titles from here for the snippets/maps
-import {currentParent} from "$lib/components/stores"
 
+
+// import maps from "$lib/data/maps.json"; // I could get page titles from here for the snippets/maps
+import {currentParent, currentTitle} from "$lib/components/stores"
+console.log($currentParent, $currentTitle)
 export let data; // navigation and page data
 $: data;
 
@@ -33,15 +35,33 @@ $: if($page.url.pathname.indexOf('/maps/')!== -1 || $page.url.pathname.indexOf('
         }
     }
 }
-//WTF? THIS does not log, but the below inline tag DOES???
+//WTF? THIS does not log, but the below inline tag DOES???  
 console.log("PARENT NAME FROM STORE: ",$currentParent)
 // $: if($currentParent){
 //     current_linktext = $currentParent;
 // }
 
+/** to convert to better JS!! */
+let prune = function(val){
+        let arr = val.split("/").reverse();
+
+        let w = []
+        for(let a=0;a<arr.length;a++){
+            if(arr[a] !== ""){
+                w.push(arr[a])
+            }
+        }
+        return(w[0]);
+    } 
+
 /** catch cases where LT is not actually set: */
-$: if(current_linktext === undefined){
-    current_linktext = "not set";
+$: {
+    if(current_linktext === undefined){
+        current_linktext = prune($currentTitle);
+    }
+    if(current_linktext === undefined){
+        current_linktext = "not set";
+    }
 }
 
 /** TODO: Get LT from STORE for ID Games browser!! */

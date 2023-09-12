@@ -1,5 +1,7 @@
 <script lang="ts">
 import { page } from "$app/stores"
+import {currentTitle} from "$lib/components/stores"
+
 /** 
  * https://developer.mozilla.org/en-US/docs/Learn/Tools_and_testing/Client-side_JavaScript_frameworks/Svelte_stores
  * import my stores for BC and parent data, for READING in this component: 
@@ -59,6 +61,7 @@ $:{
                 for(let b=0; b<working[a].childs.length;b++){
                     if(start_at === working[a].childs[b].id){
                         bc.push({'id':start_at,'item':prune(working[a].childs[b].name)})
+                        // currentTitle.set(prune(working[a].childs[b].name));
                         start_at = working[a].id;
                     }
                 }                

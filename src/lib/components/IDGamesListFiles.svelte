@@ -54,7 +54,8 @@ function setParent(){
         parentTitle = this.getAttribute("data-title");
         parentTitle = parentTitle
         $currentParent = this.getAttribute("data-title");
-        $currentTitle = this.getAttribute("data-title")
+        // $currentTitle = this.getAttribute("data-title")     /** a STORE! */
+        currentTitle.set(this.getAttribute("data-title"))
     }
 }
 </script>
