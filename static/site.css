@@ -670,3 +670,9 @@ div.form textarea{
 div.form textarea.textentry{
     height:200pt;
 }
+
+/* for sveltekit generated IDGames breadcrumb */
+#idg_bc > li{
+    border-top: none;
+    border-bottom: none;
+}
