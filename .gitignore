@@ -1,0 +1,5 @@
+/node_modules/
+/backend/__pycache__/
+/backend/libs/__pycache__/
+.svelte-kit/
+
