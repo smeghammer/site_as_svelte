@@ -1,3 +1,4 @@
+import logging
 from fastapi import FastAPI
 import uvicorn
 from libs.database import Database
@@ -26,8 +27,9 @@ API for Doom WAD/map based items.
 '''
 @app.get('/api')
 async def root():
+    logging.info("TEST")
     ''' Return root message '''
-    return {"status":"ok","message":"backend API root"}
+    return {"status":"ok","message":"container backend API root"}
 
 '''
 Read-only retrieval endpoints. They overload the back-end function `get_wads()`
@@ -36,6 +38,7 @@ Read-only retrieval endpoints. They overload the back-end function `get_wads()`
 @app.get('/api/all')
 async def wads():
     ''' return JSON list all entries '''
+    
     data = database.get_wads(False,False)
     return {"status":"ok","message":"retrieved all items summary data OK","data":data}
 
@@ -120,6 +123,7 @@ async def add(doomItem: DoomItem):  # ok it seems fiddly to UPDATE a pydantic mo
 
 ''' run the app '''
 if __name__ == "__main__":
+    print("Attempting to start...")
     uvicorn.run("main:app")
 
     

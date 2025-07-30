@@ -6,7 +6,7 @@ import {error} from "@sveltejs/kit";
 /** expose the default page load data */
 export async function load({params})  {
     try{
-        const response = await fetch("http://localhost:8000/api/all/details",{method:'GET'});
+        const response = await fetch("http://localhost:8001/api/all/details",{method:'GET'});
         const responseData = await response.json()
         return(responseData)
     }
@@ -34,7 +34,7 @@ export const actions = {
         
         // and call external endpoint to get details:
         try{
-            const response = await fetch("http://localhost:8000/api/edit/update",{
+            const response = await fetch("http://localhost:8001/api/edit/update",{
                 method:'POST',
                 headers:{'Content-Type':'application/json' },
                 body: jsonBody
@@ -66,7 +66,7 @@ export const actions = {
         
         // and call external endpoint to get details:
         try{
-            const response = await fetch("http://localhost:8000/api/edit/add",{
+            const response = await fetch("http://localhost:8001/api/edit/add",{
                 method:'POST',
                 headers:{'Content-Type':'application/json' },
                 body: jsonBody

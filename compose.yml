@@ -1,0 +1,37 @@
+services:
+
+  db:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - 27027:27017
+    networks:
+      - doom
+    volumes:
+      - mongodbdata:/data/db
+
+    
+
+
+  api:
+    depends_on:
+      - db
+
+    container_name: api
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    networks:
+      - doom
+    ports:
+      # this works as expected:
+      - 8001:8000
+
+volumes:
+  mongodbdata:
+    # this is crucial if the volume is given a name
+    name: mongodbdata
+
+networks:
+  doom:
+    name: doom

@@ -1,4 +1,4 @@
-# Site rework TEST
+# Site rework
 
 Note I have included the back-end database code in /backend. This doesn't need to be in the same location as the sveltekit code, but it does require a mongoDB with suitable database. See below for deployment and running.
 
@@ -6,9 +6,27 @@ Note I have included the back-end database code in /backend. This doesn't need t
 This is required to house the back-end data driving the `/maps` and `/snippets` dynamic routes, as well as the `/admin` route.
 
 This uses the existing standard Docker [mongoDB container](https://hub.docker.com/_/mongo) image.
-It is run on localhost with standard mongoDB port mapping. It also uses a volume for persistent storage on the local filesystem. To first build, run:
+It is run on localhost with standard mongoDB port mapping. 
 
-`sudo docker run --name mongo -v /home/path/to/dev/mount/mongodata:/data/db -p 27017:27017 -d mongo:latest`
+It also uses a shared area for persistent storage on the local filesystem (here, a [bind mount](https://docs.docker.com/engine/storage/bind-mounts/)). To first build, run:
+
+`$ docker run --name mongo -v /home/path/to/dev/mount/mongodata:/data/db -p 27017:27017 -d mongo:latest`
+
+This is useful id you want to (easily) manage the data yourself. 
+
+However, alternatively, you can use a [volume mount](https://docs.docker.com/engine/storage/#volume-mounts) and let Docker manage the volume internally:
+
+ - https://stackoverflow.com/questions/35400740/how-to-set-docker-mongo-data-volume
+
+## create the volume:
+
+`$ docker volume create mongodbdata`
+
+then, run the Mongo image:
+
+`$ docker run --name mongo -v mongodbdata:/data/db -p 27027:27017 -d mongo:latest`
+
+Note the port change to not conflict with a local mongoDB instance (which I did...)
 
 The data may be loaded from a mongodump, found in `/data/mongodumps/[database]`.
 
