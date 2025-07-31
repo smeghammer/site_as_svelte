@@ -16,29 +16,36 @@ import maps from "$lib/data/maps.json";
 
 /** URL here is the API call URL, with optional params, extracted below */
 export const GET = function({url}){
-    //console.log(url.searchParams.get('type'));
-    let out = {'message':'ok','data':[]}
-    // it must return a Response():
-    // const resp = Response.json({"nakatomi":"Welcome to the party, pal!"});
-    //return new Response({"nakatomi":"Welcome to the party, pal!"});
-    //console.log(maps)
-    if(url.searchParams.get('type')){   // should be typed to an enum
-        for(let map of maps){
-            if(map.type === url.searchParams.get('type')){
-                let link=true;
-                let active = false;
-                if(url.searchParams.get('slug') == map.slug) active = true;
-                //console.log(map.title);
-                out.data.push({"slug":map.slug,"active":active,"link":link,"nicename":map.title});
+    try{
+        //console.log(url.searchParams.get('type'));
+        let out = {'message':'ok','data':[]}
+        // it must return a Response():
+        // const resp = Response.json({"nakatomi":"Welcome to the party, pal!"});
+        //return new Response({"nakatomi":"Welcome to the party, pal!"});
+        //console.log(maps)
+        if(url.searchParams.get('type')){   // should be typed to an enum
+            for(let map of maps){
+                if(map.type === url.searchParams.get('type')){
+                    let link=true;
+                    let active = false;
+                    if(url.searchParams.get('slug') == map.slug) active = true;
+                    //console.log(map.title);
+                    out.data.push({"slug":map.slug,"active":active,"link":link,"nicename":map.title});
+                }
+            }
+
+            // CARE! distinction between false and falsy!
+            // if(0 === true) is ALWAYS false
+            if(!out.data.length == true){
+                // console.log('in else')
+                out.message="no data";
             }
         }
-
-        // CARE! distinction between false and falsy!
-        // if(0 === true) is ALWAYS false
-        if(!out.data.length == true){
-            // console.log('in else')
-            out.message="no data";
-        }
+        return Response.json(out);
     }
-    return Response.json(out);
+    catch(ex){
+        console.log(`ERROR: ${ex} `);
+        return Response.json([{"status":"error", "message":ex}]);
+
+    }
 }

@@ -1,6 +1,6 @@
 export async function load({params}){
     try{
-        const response = await fetch("http://localhost:8000/api/all",{method:'GET'});
+        const response = await fetch("http://localhost:8001/api/all",{method:'GET'});
         const responseData = await response.json()
         return(responseData)
     }

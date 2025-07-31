@@ -1,0 +1,9 @@
+# https://stackoverflow.com/questions/65738611/why-does-git-ignore-not-work-for-pycache-folder
+
+
+/node_modules/
+/backend/__pycache__/
+backend/libs/__pycache__/*.pyc
+.svelte-kit/
+*.pyc
+# backend/libs/__pycache__/basemodels.cpython-310.pyc

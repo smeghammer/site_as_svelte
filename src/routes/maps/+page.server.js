@@ -11,8 +11,9 @@ import {error} from "@sveltejs/kit";
 export async function load({params}){
     /** here I need to make an API call to the relevant emdpoint to get the map summary data: */
     try{
-        const response = await fetch("http://localhost:8000/api/wads",{method:'GET'});
+        const response = await fetch("http://localhost:8001/api/wads",{method:'GET'});
         const responseData = await response.json()
+        console.log(`RESPONSEDATA: ${responseData}`)
         return(responseData)
     }
     catch(err){

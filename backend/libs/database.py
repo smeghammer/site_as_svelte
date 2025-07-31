@@ -1,17 +1,23 @@
+import logging
 import pymongo
 
 
 class Database:
     # to make configurable
-    port = 27017
+    port = 27017     #27027
     addr = "localhost" 
     database = "smeghammer"
+    # https://www.mongodb.com/docs/languages/python/pymongo-driver/current/connect/mongoclient/
+    # This is the SERVICE NAME form the compose file
+    conn_uri = "mongodb://db:27017/"
 
     def __init__(self) -> None:
         # set up database connection
-        self.connection = pymongo.MongoClient(self.addr,self.port)[self.database]
+        # self.connection = pymongo.MongoClient(self.addr,self.port)[self.database]
+        self.connection = pymongo.MongoClient(self.conn_uri)[self.database]
 
     def get_wads(self,detail=False, type="maps",id=False, slug=False) -> list:
+        logging.info("Getting WADs")
         try:
             filter = {}
             if type:
@@ -26,8 +32,8 @@ class Database:
 
             return list(self.connection['maps'].find(filter,projection))
         except Exception as ex:
-            # log errort here
-            return []
+            logging.error(ex)
+            return [{"status":"error", "message":ex}]
         
     def add_item(self, item):
         new_id = self._get_new_id()
