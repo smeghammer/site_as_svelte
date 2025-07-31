@@ -26,6 +26,20 @@ services:
     ports:
       # this works as expected:
       - 8001:8000
+    # https://docs.docker.com/compose/how-tos/file-watch/
+    # Key is the comment around paths: "All paths are relative to the project directory, apart from ignore file patterns"
+    # run with 
+    # `$ docker compose up --watch`
+    develop:
+      watch:
+        # this - er - syncs the changes:
+        - action: sync
+          path: ./
+          target: /app
+        # but THIS is needed to actually reload those changes: 
+        - action: rebuild
+          path: ./ 
+        
 
 volumes:
   mongodbdata:

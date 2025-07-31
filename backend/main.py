@@ -9,7 +9,7 @@ app = FastAPI()
 database = Database()
 
 def getDetail(type,identifier):
-    ''' Abstracion of various calls to get item(s) data '''
+    ''' Abstracion of various calls to get item(s) data: '''
     # identifier may be a string or an int:
     try:
         identifier = int(identifier)
@@ -27,9 +27,18 @@ API for Doom WAD/map based items.
 '''
 @app.get('/api')
 async def root():
-    logging.info("TEST")
+    logging.info("TEST2")
     ''' Return root message '''
-    return {"status":"ok","message":"container backend API root"}
+    return {"status":"ok","message":"container backend API root TEST"}
+
+
+@app.get('/api/fish')
+async def rooty():
+    logging.warning("TEST WARNING")
+    logging.info("TEST")
+    ''' Return y message '''
+    return {"status":"ok","message":"dummy endpoint test"}
+
 
 '''
 Read-only retrieval endpoints. They overload the back-end function `get_wads()`
