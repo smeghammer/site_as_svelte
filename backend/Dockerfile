@@ -25,6 +25,13 @@ COPY . ./
 
 
 
+# https://betterstack.com/community/guides/scaling-python/fastapi-with-docker/
+
 # ENTRYPOINT [ "python","main.py" ]
 # see https://fastapi.tiangolo.com/deployment/docker/#create-the-fastapi-code
-CMD ["fastapi", "run", "main.py"]
+# CMD ["fastapi", "run", "main.py"]
+
+# or for dev:
+# https://www.uvicorn.org/#quickstart
+# https://fastapi.tiangolo.com/deployment/manually/#run-the-server-program
+CMD ["uvicorn","main:app","--host", "0.0.0.0", "--port", "8000","--reload", "--log-level", "debug"]
