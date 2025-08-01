@@ -45,7 +45,7 @@ class Database:
     def add_item(self, item):
         new_id = self._get_new_id()
         if new_id:
-            logging.debug(new_id,item)
+            logging.debug(f"item %s created with id %s",item.title, new_id)
             #  item['id'] = new_id # errors on trying to update the model...
             self.update_item(item,new_id)
 
