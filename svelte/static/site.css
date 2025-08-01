@@ -1,0 +1,682 @@
+/* https://stackoverflow.com/questions/12812441/how-do-i-use-woff-fonts-for-my-website */
+@font-face {
+    font-family: "AmazDooMLeft";
+    src: url("/fonts/AmazDooMLeft.woff2") format('woff2'),
+        url("/fonts/AmazDooMLeft.woff") format('woff'),
+        url("/fonts/AmazDooMLeft.ttf") format('truetype'),
+        url("/fonts/AmazDooMLeft.svg") format('svg');
+}
+
+@font-face {
+    font-family: "AmazDooMLeftOutline";
+    src: url("/fonts/AmazDooMLeftOutline.woff2") format('woff2'),
+        url("/fonts/AmazDooMLeftOutline.woff") format('woff'),
+        url("/fonts/AmazDooMLeftOutline.ttf") format('truetype'),
+        url("/fonts/AmazDooMLeftOutline.svg") format('svg');
+}
+@font-face {
+    font-family: "AmazDooMRight";
+    src: url("/fonts/AmazDooMRight.woff") format('woff');
+}
+@font-face {
+    font-family: "AmazDooMRight2";
+    src: url("/fonts/AmazDooMRight2.woff") format('woff');
+}
+@font-face {
+    font-family: "AmazDooMRightOutline";
+    src: url("/fonts/AmazDooMRightOutline.woff") format('woff');
+}
+@font-face {
+    font-family: "DooM";
+    src: url("/fonts/DooM.woff") format('woff');
+}
+
+/*
+css gradients:
+https://css-tricks.com/css3-gradients/
+
+also see:
+https://css-tricks.com/couple-takes-sticky-footer/
+for sticky footer
+
+or
+https://stackoverflow.com/questions/13609006/floating-footer-always-on-the-bottom-and-visible
+for fixed
+*/
+html,body{
+    height: 100%;
+}
+body {
+    font-family: arial,sans serif;
+    background-color: black;
+    padding-bottom: 80px;
+/*     padding-left: 5px; */
+    background-image: linear-gradient(to left, darkred,black,black,black,black,black,black,black, darkred);
+}
+
+h1 {
+    color: #c00000;
+    font-family: AmazDooMLeftOutline;
+    font-size: 5em;
+    letter-spacing: 0.2em;
+    margin-top: 30px;
+    margin-bottom: -10px;
+}
+
+p{
+	line-height: 1.6em;
+}
+
+/* https://www.w3docs.com/snippets/css/how-to-wrap-text-in-a-pre-tag-with-css.html */
+pre {
+    overflow-x: auto;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+  }
+
+/* styles for r667 repo navigation */
+div.toplevelitems{
+    text-transform: uppercase;
+    text-align: center;
+    padding:1px;   
+    border-top: 1px solid darkred;
+    border-bottom: 1px solid darkred;
+}
+
+div.topic > ul.l2nav{
+    display: inline-block;
+    border-bottom: 1px solid darkred;
+    width: 100%;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+/* https://stackoverflow.com/questions/17069972/css-make-inline-block-elements-span-the-whole-width-of-container/39511747 */
+div.topic > ul.l2nav > li{
+    flex: 1 1 100%;
+    text-align: center;
+    color: #ee0000;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+div.topic > ul.l2nav > li{
+    cursor: pointer;
+}
+div.topic > ul.l2nav > li.current{
+    background-color: #660000;  
+}
+div.topic > ul.l2nav > li:hover{
+    background-color: #660000;  
+}
+
+/* handle hover on items menu */
+div.toplevelitems > div:hover{
+    background-color: darkred;  
+    cursor: pointer;
+}
+div.toplevelitems > div.current{
+    background-color: darkred;  
+}
+
+#sausage ul{
+    padding-left: 0px;
+}
+
+#subnav{
+    padding-top: 15px;
+}
+
+#subnav > ul{
+    text-align: center;
+    font-style: italic;
+}
+/* alternate l2 nav: */
+#subnav > ul > li{
+	display: inline-block;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    border-right: 2px solid darkred;
+    padding-bottom: 2px;
+}
+#subnav > ul > li:last-of-type{
+    border-right: none;
+}
+#subnav > ul > li > a{
+    color: red;
+    padding-right: 4px;
+}
+
+
+div.topic img.dlicon, #generated_content_wrapper img.dlicon, #sausage img.dlicon {
+    width: 25px;
+    padding-right: 5px;
+    position: relative;
+    /* top: 5px; */
+}
+
+#generated_content_wrapper > div{
+	padding-left: 100px;
+    padding-right: 100px;
+}
+
+#generated_content_wrapper > div > ul > li > a > img{
+	float: right;
+}
+
+span.inline_credit{
+    display: inline-block;
+    /* vertical-align: baseline; */
+    padding-top: 11px;
+    color: #c0c0c0;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+/* before media queries otherwise it overrides them. I.E. LESS than 768px */
+/* div#menubar{
+	white-space: normal;
+}*/
+
+div#menubar li {
+    /* padding-left: 15px; */
+    font-size: medium;
+} 
+
+/* default styles for summary pages */
+#mapsummaries div.pure-u-1-3,#mapsummaries div.pure-u-2-3, #snippetsummaries div.pure-u-1-3,#snippetsummaries div.pure-u-2-3{
+/* 	margin: 2px; */
+padding-top:2px;
+}
+
+#mapsummaries p, #snippetsummaries p{
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+#mapsummaries h3, #snippetsummaries h3{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-right: 5px;
+	padding-top:20px;
+	text-align:center;
+}
+
+.dialogue{
+    /* position: absolute; */
+    top: 100px;
+    /* text-align: center; */
+    margin-left: auto;
+    margin-right: auto;
+    background-color: black;
+    border: 10px solid #c00000;
+    width: 97%;
+}
+.dialogue > .titlebar{
+    border-bottom: 10px solid #c00000;
+}
+
+.dialogue .closebox{
+    float: right;
+    color: white;
+    border-left: 10px solid #c00000;
+    height: 45px;
+    width: 32px;
+    font-size: 24pt;
+    margin-left: 5px;
+    padding-left: 8px;
+    padding-top: 3px;
+    cursor: pointer;
+}
+
+.readme-container, .dialogue-container{
+    height: 50vh;
+    overflow: auto;
+}
+
+#dialogue-content{
+    max-height: 70vh;
+    overflow: auto;
+}
+
+#dialogue{
+    position: sticky;
+    top: 60px;
+    z-index: 3;
+}
+#dialogue h2{
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 6px;
+    padding-bottom: 0px;
+    color: #c00000;
+    font-size: 1.4em;
+    font-style: italic;
+    display: inline-block;
+}
+.paginator > ul{
+    padding-left: 0px;
+    list-style-type: none;
+}
+.paginator > ul > li{
+    display: inline;
+    padding-left: 10px;
+    padding-right: 5px;
+}
+
+.paginator > ul > li > a.current{
+    cursor: default;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* > 768 */
+@media screen and (min-width: 48em){
+    /* get rid of border at low width */
+    body{	
+        background-image: linear-gradient(to left, darkred,black,black,black,black,black, darkred);
+    }
+    h1 {
+        font-size: 6em;
+        letter-spacing: 0.2em;
+        margin-top: 30px;
+        margin-bottom: -10px;
+    }
+    
+    div#menubar li {
+    	font-size: large;
+    }
+    
+	#mapsummaries h3, #snippetsummaries h3{
+		margin-bottom:0px;
+		padding-top:0px;
+		text-align: left;
+	}
+	#snippetsummaries div.pure-u-md-2-3, #mapsummaries div.pure-u-md-2-3{
+		border-top: 3px solid #460000;
+	} 
+
+	#snippetsummaries div.pure-u-md-1-3{
+		background-color: #460000;
+	}
+
+    .dialogue{
+        border: 10px solid #c00000;
+        width: 100%;
+    }
+    #dialogue h2{
+        padding-left: 5px
+    }
+}
+/* > 1024 */
+@media screen and (min-width: 64em){
+    body{	
+        /*background-color: red;*/        
+        background-image: linear-gradient(to left, darkred,black,black,black, darkred);
+    }
+    h1 {
+        font-size: 7em;
+        letter-spacing: 0.2em;
+        margin-top: 30px;
+        margin-bottom: -10px;
+    }
+    div#menubar li {
+     font-size: x-large;
+    }
+    
+    .dialogue{
+        border: 10px solid #c00000;
+        width: 100%;
+    }
+}
+
+*.centre{
+    text-align: center;
+}
+
+h2 {
+	color: #c00000;
+	font-size: 1.4em;
+	margin-top: 50px;
+	font-style: italic;
+}
+
+h3 {
+	color: #c00000;
+	font-size: 1.0em;
+	margin-top: 30px;
+	font-style: italic;
+}
+h4{
+	color: #c00000;
+	font-size: 0.9em;
+	margin-top: 30px;
+	text-decoration: italic;
+}
+
+h4.screenshots:hover{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+li > a:hover{
+	color: white;
+}
+li > span{
+	color: white;
+	font-weight: bold;
+	text-decoration: underline;
+    /* float: right; */
+    /* padding-top: 10px; */
+    padding-right: 5px;
+}
+#sausage li > span{
+    text-decoration: none;
+    color: #c00;
+}
+
+ul.links > li {
+    margin-bottom: 10px;
+}
+ul.links > li > span {
+    padding-left: 20px;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.thumbs p{
+    width: 600px;
+}
+
+.contents ul > li{
+	color: white;
+	font-style: italic;
+}
+#sausage img.iwad_logo{
+    width: 60px;
+    vertical-align: middle;
+    padding-right: 5px;
+    padding-bottom: 15px;
+}
+#sausage img.iwad_logo_missing{
+    width: 60px;
+    height: 0px;
+    padding-right: 5px;
+}
+#sausage img.screenshots_missing{
+    width: 27px;
+    height:0px;
+    padding-right: 5px;
+}
+
+#sausage img.screenshots{
+    width: 28px;
+    height: 28px;
+    padding-right: 5px;
+    position: relative;
+    top: 4px;
+}
+
+/* fucking irrationinal box model! If you have A4 paper, and want a margin when you print, adding a margin to your doc DOES NOT ALTER THE FUCKING PAGE SIZE!!!
+Fix: https://css-tricks.com/almanac/properties/b/box-sizing/ */
+div.contents img {
+	width: 100%;
+}
+div.contents h2 {
+    padding: 5px;
+}
+div.contents p {
+	color: white;
+        padding: 5px;
+}
+div.contents pre {
+    color: cyan;
+}
+
+/* 768 */
+@media screen and (min-width: 48em){
+    div.contents p {
+	padding: 0px;
+    }
+    div.contents h2 {
+	padding: 0px;
+    }
+    div.topic > ul.l2nav{
+        display: flex;
+    }
+
+}
+div.contents ul > li {
+    border-top: 1px solid rgba(255,0,0,40%);
+	list-style-type: none;
+	height: 35px;
+}
+div.contents ul > li:last-of-type {
+    border-bottom: 1px solid rgba(255,0,0,40%);
+}
+div.contents ul.bulleted > li{
+	list-style-type: disc;
+}
+
+p.italic{
+	font-style: italic;
+}
+
+div.contents ul > li a {
+	color: #cc0000;
+	font-style: italic;
+	padding-right: 5px
+}
+
+/* body links */
+div.contents  p > a {
+	color: #cc0000;
+	font-style: italic;
+}
+
+div.contents > div.pure-u-3-5{
+	border-top: 1px solid grey;
+}
+
+/* #splash{
+    background-color: #000;
+    margin: 5px;
+    margin-right: 8px;
+}
+#splash  img{
+    border: 1px solid white;
+}
+
+@media screen and (min-width:48em){
+       #splash{
+        margin: 0px;
+    }
+} */
+
+#footerpadding{
+    padding-bottom: 80px;
+}
+
+div.screenshots{
+    display: none;
+}
+
+div.footer{
+    position: fixed; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: black;
+    padding: 10px;
+    color: grey;
+    border-top: 1px solid darkred;
+}
+div.footer img{
+    height: 80px;
+    float: right
+}
+div.footer img.centre{
+    margin:auto;
+}
+div.footer ul{
+    padding-left: 20px;
+}
+/* https://stackoverflow.com/questions/4888223/align-image-in-center-and-middle-within-div */
+div.imgcentre{
+    margin: auto;
+    display: flex;
+}
+div.footer a{
+    color: grey;
+}
+div.footer ul{
+    list-style-type: none;
+}
+a, div.screenshots {
+	color: white;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+	color: #BB2B87;
+}
+.coloredlink {
+	color: #BB2B87;
+}
+ul.nav
+{
+    text-align:right;
+}
+
+/* override JQueryUI dialog styles: */
+body.repo .ui-dialog{
+    font-size: 1em;
+    background-color: #330000;
+    border: 1px solid darkred;
+    padding:0px;
+}
+
+body.repo .ui-dialog div.ui-dialog-titlebar{
+    background-color: darkred;
+    border: none;
+}
+body.repo .ui-dialog div.ui-dialog-titlebar > span{
+    color: white;
+}
+body.repo .ui-widget-content{
+    color: #aaa;
+}
+.ui-dialog h3{
+    text-decoration: none;
+    color: #fff;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 1.2em;
+    font-style: italic;
+}
+.ui-dialog span.hilite {
+    font-weight: bold;
+    padding-right:10px;
+}
+/* #menubar > ul > li.pure-menu-item.hilight > a{
+	color: #c00000;
+	text-decoration: underline;
+} */
+li.hilight {
+    font-weight: bold;
+}
+.inlineimages {
+    margin-left:50px;
+    display: block;
+    height: 233px;
+}
+.inlineimage {
+    float: left;
+    text-align: center;
+    width: 260px;
+    height: 230px;
+}
+div.ui-dialog-content img.soundwave_padding{
+    margin-top: -60px; 
+    margin-bottom: -80px;
+}
+
+.navbullet
+{
+    border:0px;
+    vertical-align:middle;
+    margin-right:5px;
+}
+#footer{
+    padding-bottom: 130px;
+}
+
+code{
+    color:lightgreen;
+}
+.codecomment{
+    color:darkgreen;
+    font-style: italic;
+}
+
+span.code{
+    font-family: courier, monospace;
+    font-size: 1.2em;
+    color: #0ff;
+}
+h1 > span.code, h2 > span.code, h3 > span.code, h4 > span.code, h5 > span.code{
+	color: #c00000;
+}
+
+/* JQuery UI over-rides */
+.ui-widget-overlay{
+    position:fixed; /* force the overlay to be static - so we don't reveal clickable links as we scroll...' */
+}
+.ui-dialog{
+    z-index: 100;
+}
+div.fullheight{
+	height: 100%;
+}
+/*  DW browser iframe */
+div.contents iframe{
+	width: 100%;
+ 	height: 100%;
+	border: none;
+	border-bottom: 110px solid black;
+}
+.dialogue > pre{
+    padding: 10px;
+}
+#sausage > ul > li > a{
+    cursor: default;
+}
+#sausage > ul > li > a > img.readme{
+    width: 20px;
+    position: relative;
+    /* top: 3px; */
+}
+
+#sausage > ul > li > a.active_link{
+    cursor: pointer;
+}
+
+div.form input[type="text"]{
+    width:100%;
+}
+
+div.form textarea{
+    width:100%;
+    height:50pt;
+}
+div.form textarea.textentry{
+    height:200pt;
+}
+
+/* for sveltekit generated IDGames breadcrumb */
+#idg_bc > li{
+    border-top: none;
+    border-bottom: none;
+}

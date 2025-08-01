@@ -10,17 +10,15 @@ services:
     volumes:
       - mongodbdata:/data/db
 
-    
-
-
+  
   api:
     depends_on:
       - db
 
     container_name: api
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: ./fastapi
+      dockerfile: Dockerfile_fastapi
     networks:
       - doom
     ports:
@@ -39,7 +37,16 @@ services:
         # but THIS is needed to actually reload those changes: 
         - action: rebuild
           path: ./ 
-        
+
+
+  # svelte:
+  #   container_name: svelte
+  #   build:
+  #     context: ./svelte 
+  #     dockerfile: Dockerfile_svelte
+    
+  #   networks:
+  #     - doom
 
 volumes:
   mongodbdata:
