@@ -13,7 +13,8 @@ import {error} from "@sveltejs/kit";
 export async function load({params}){
     try{
         console.log(params['slug']);
-        const response = await fetch("http://localhost:8001/api/wad/"+params['slug'],{method:'GET'});
+        // const response = await fetch("http://localhost:8001/api/wad/"+params['slug'],{method:'GET'});
+        const response = await fetch("http://api:8000/api/wad/"+params['slug'],{method:'GET'});
         const responseData = await response.json()
         return(responseData)
     }

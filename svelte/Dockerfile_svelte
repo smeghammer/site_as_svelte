@@ -1,0 +1,23 @@
+# https://hasura.io/blog/how-to-write-dockerfiles-for-python-web-apps-6d173842ae1d
+FROM node:21.6.2-alpine
+
+
+
+# set working dir in container:
+WORKDIR /svelte
+
+# https://docs.docker.com/reference/dockerfile/#workdir
+# copy everything to the container working dir:
+COPY . ./
+
+# deploy the node app, based upon the copied config file(s)
+RUN npm install
+
+# expose the (default) port
+
+# ENV HOST="0.0.0.0"
+
+EXPOSE 5173
+
+# and run the dev server
+CMD ["npm","run","dev"]

@@ -24,7 +24,8 @@ import {error} from "@sveltejs/kit";
 // Call mack-end Mongo database API. I need to get the slug into here:
 export async function load({params}){
     try{
-        const response = await fetch("http://localhost:8001/api/snippet/"+params['slug'],{method:'GET'});
+        // const response = await fetch("http://localhost:8001/api/snippet/"+params['slug'],{method:'GET'});
+        const response = await fetch("http://api:8000/api/snippet/"+params['slug'],{method:'GET'});
         const responseData = await response.json()
         return(responseData)
     }

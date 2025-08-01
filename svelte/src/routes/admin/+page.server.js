@@ -6,7 +6,8 @@ import {error} from "@sveltejs/kit";
 /** expose the default page load data */
 export async function load({params})  {
     try{
-        const response = await fetch("http://localhost:8001/api/all/details",{method:'GET'});
+        // const response = await fetch("http://localhost:8001/api/all/details",{method:'GET'});
+        const response = await fetch("http://api:8000/api/all/details",{method:'GET'});
         const responseData = await response.json()
         return(responseData)
     }

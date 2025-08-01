@@ -39,14 +39,19 @@ services:
           path: ./ 
 
 
-  # svelte:
-  #   container_name: svelte
-  #   build:
-  #     context: ./svelte 
-  #     dockerfile: Dockerfile_svelte
+  svelte:
+    container_name: svelte
+    build:
+      context: ./svelte 
+      dockerfile: Dockerfile_svelte
     
-  #   networks:
-  #     - doom
+    networks:
+      - doom
+
+    # map the local port to container port:
+    ports:
+      - "5173:5173" 
+    
 
 volumes:
   mongodbdata:
