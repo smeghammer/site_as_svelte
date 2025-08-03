@@ -35,7 +35,7 @@ export const actions = {
         
         // and call external endpoint to get details:
         try{
-            const response = await fetch("http://localhost:8001/api/edit/update",{
+            const response = await fetch("http://api:8000/api/edit/update",{
                 method:'POST',
                 headers:{'Content-Type':'application/json' },
                 body: jsonBody
@@ -67,7 +67,7 @@ export const actions = {
         
         // and call external endpoint to get details:
         try{
-            const response = await fetch("http://localhost:8001/api/edit/add",{
+            const response = await fetch("http://api:8000/api/edit/add",{
                 method:'POST',
                 headers:{'Content-Type':'application/json' },
                 body: jsonBody

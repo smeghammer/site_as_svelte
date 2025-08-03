@@ -83,10 +83,20 @@ class Database:
             logging.debug('getting incremented ID...')
             # see https://stackoverflow.com/questions/32076382/mongodb-how-to-get-max-value-from-collections
             # https://stackoverflow.com/questions/8109122/how-to-sort-mongodb-with-pymongo
-            current_max_id = self.connection['maps'].find({},{"id":True,"_id":False}).sort('id',pymongo.DESCENDING).limit(1)[0].get('id',False)
-            if current_max_id:
-                return current_max_id + 1
-            raise Exception("Cannot determine current max ID!")
+            try:
+                current_max_id = self.connection['maps'].find({},{"id":True,"_id":False}).sort('id',pymongo.DESCENDING).limit(1)[0].get('id',False)
+                logging.debug(current_max_id)
+                if current_max_id:
+                    logging.debug("Found existing ID. Incrementing...")
+                    return current_max_id + 1
+            except:
+
+                # if current_max_id:
+                #     logging.debug("Found existing ID. Incrementing...")
+                #     return current_max_id + 1
+                logging.debug("returning first ID")
+                return 1
+            # raise Exception("Cannot determine current max ID!")
         except Exception as ex:
             logging.warning(str(ex))
             return False
