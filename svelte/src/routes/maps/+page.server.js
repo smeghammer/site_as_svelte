@@ -15,7 +15,8 @@ export async function load({params}){
         console.log("GETTING MAPS:");
         const response = await fetch("http://api:8000/api/wads",{method:'GET'});
         const responseData = await response.json()
-        console.log(`RESPONSEDATA: ${responseData}`)
+        console.log('RESPONSEDATA:')
+        console.log(responseData)
         return(responseData)
     }
     catch(err){

@@ -6,7 +6,7 @@ import { page } from "$app/stores";
 
 // import maps from "$lib/data/maps.json"; // I could get page titles from here for the snippets/maps
 import {currentParent, currentTitle} from "$lib/components/stores"
-console.log($currentParent, $currentTitle)
+// console.log($currentParent, $currentTitle)
 export let data; // navigation and page data
 $: data;
 
@@ -28,15 +28,24 @@ $: if($page.url.pathname.indexOf('/maps/')!== -1 || $page.url.pathname.indexOf('
     current_linktext = undefined;   //to account for missing data
     
     /** using data from +layout.server.js load function: */
+    // console.log("in PageTitle:")
+    // console.log(data);
     for(let item of data.data){
-        let check = new RegExp(item.slug+"$");
-        if($page.url.pathname.match(check)){
-            current_linktext = item.title;
+        try{
+            let check = new RegExp(item.slug+"$");
+            if($page.url.pathname.match(check)){
+                current_linktext = item.title;
+            }
         }
+        catch(e){
+            console.log("PageTitle error:")
+            console.log(e)
+        }
+        
     }
 }
 //WTF? THIS does not log, but the below inline tag DOES???  
-console.log("PARENT NAME FROM STORE: ",$currentParent)
+// console.log("PARENT NAME FROM STORE: ",$currentParent)
 // $: if($currentParent){
 //     current_linktext = $currentParent;
 // }

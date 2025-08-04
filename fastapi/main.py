@@ -23,15 +23,27 @@ def getDetail(type,identifier):
     logging.debug(f"getting %s, %s",identifier, type)
     data=None
     try:
+        logging.debug("trying with int identifier")
         identifier = int(identifier)
         data = database.get_wads(detail=True,type=type,id=identifier)
     except Exception as ex:
-        data = database.get_wads(detail=True,type=type,slug=identifier)
-        logging.warning(f"Failed to get WADs from database %s",ex)
+        ''' what do I see as params here? '''
+        logging.debug(f"TYPE %s, IDENTIFIER: %s", type, identifier)
+        try:
+            data = database.get_wads(detail=True,type=type,slug=identifier)
+            logging.debug("trying with string identifier")
+            logging.debug(data)
+        except:
+            # do better logic here:
+            logging.warning(f"Failed to get WADs from database %s",ex)
     if data:
         return {"status":"ok","message":f"retrieved {type} details data OK","data":data}
     return {"status":"error","message":f"no matching {type}","data":data}
-        
+
+
+'''
+This needs to be split into better defined methods
+'''
 
 '''
 API for Doom WAD/map based items.

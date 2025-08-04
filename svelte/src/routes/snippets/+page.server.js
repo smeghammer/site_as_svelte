@@ -9,7 +9,10 @@ export async function load({params}){
         // const response = await fetch("http://localhost:8001/api/snippets",{method:'GET'});
         const response = await fetch("http://api:8000/api/snippets",{method:'GET'});
         const responseData = await response.json()
+        console.log('[SERVER] SNIPPET RESPONSEDATA: ')
+        // console.log(responseData)    // this is CORRECT
         return(responseData)
+        
     }
     catch(err){
         console.error(`Error in load function for /: ${error}`);

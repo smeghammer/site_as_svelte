@@ -15,7 +15,7 @@
 
     /** @type {import('./$types').PageData} */ //because we are using +page.js (rather than +page.server.js - would be PageServerData type otherwise?)
     export let data;    //inferred from load function of +page.js
-    console.log(data);
+    // console.log(data);
     const displayType:string = "maps";
 </script>
 

@@ -36,10 +36,14 @@ class Database:
             projection = {"id":True,"title":True,"description":True,"slug":True,"type":True,"imageUrl":True,"_id":False}
             if detail:
                 projection = {"_id":False}
-
-            return list(self.connection['maps'].find(filter,projection))
+            logging.debug("FILTER:")
+            logging.debug(filter)
+            result = list(self.connection['maps'].find(filter,projection))
+            logging.debug("GETTING RESULT:")
+            logging.debug(result)
+            return result
         except Exception as ex:
-            logging.error(ex)
+            logging.error(f"Error getting WADs: %s",ex)
             return [{"status":"error", "message":ex}]
 
 

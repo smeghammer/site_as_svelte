@@ -7,7 +7,8 @@
     let type="mapsx"
     export let data;
     $: data;    // from layout.server.js
-    //console.log("LAYOUT SERVER LOAD DATA: ",data);
+    console.log("LAYOUT SERVER LOAD DATA:");
+    console.log(data);  // this should be ALL DATA
 
     // globally set store:
     import {currentTitle} from "$lib/components/stores"; //read-only here

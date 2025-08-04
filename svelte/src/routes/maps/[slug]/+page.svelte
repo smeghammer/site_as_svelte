@@ -13,7 +13,7 @@
 </script>
 
 <div class="pure-u-1 pure-u-md-5-6 pure-u-lg-3-4">
-    
+    {console.log(detail)}
     <!-- this also needs to inherit data from the root layout load function -->
     <MapDetail {detail}/>
 

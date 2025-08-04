@@ -10,12 +10,17 @@ import {error} from "@sveltejs/kit";
 
 
 // Call back-end Mongo database API. I need to get the slug into here:
-export async function load({params}){
+export async function load({params}, caller){
     try{
-        console.log(params['slug']);
+        
+        // console.log(caller)
+        // console.log("in map/[slug]/page.server.js")
+        // console.log(params)
+        // console.log(params['slug']);
         // const response = await fetch("http://localhost:8001/api/wad/"+params['slug'],{method:'GET'});
         const response = await fetch("http://api:8000/api/wad/"+params['slug'],{method:'GET'});
         const responseData = await response.json()
+        // console.log(`returning ${responseData}...`)
         return(responseData)
     }
     catch(err){

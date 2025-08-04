@@ -7,7 +7,8 @@
 
     /** @type {import('./$types').PageData} */ //because we are using +page.js (rather than +page.server.js - would be PageServerData type otherwise?)
     export let data;    //inferred from load function of +page.js
-    //console.log(data);
+    console.log("in +page.svelte")
+    // console.log(data);
 
 </script>
 
@@ -21,8 +22,6 @@
         Explorer. So they are not at all in the order I did them. I might to properly order them into some sort of learning timeline at some point but - meh, life's too %^&amp;*ing short. 
     </p>
     <div id="snippetsummaries">
-        
-
         <div class="pure-g">
             
             {#each data.data as map}

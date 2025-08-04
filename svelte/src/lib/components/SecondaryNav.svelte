@@ -8,26 +8,35 @@
     export let data;
     $: data;
 
-    // console.log("SECONDARY NAV COMPONENT: ",data)
-    // console.log("SECONDARY NAV CURR PATH: ",$page.url.pathname)
+
     /** work out where we are */
     $: {
         if($page.url.pathname.indexOf('/maps') !== -1){
+            console.log("SecondaryNav: /maps")
             type = "maps";
         }
-        else if($page.url.pathname.indexOf('/snippets') !== -1){
+        // else if($page.url.pathname.indexOf('/snippets') !== -1){
+        //     console.log("SecondaryNav: /snippets")
+        //     type="snippets"
+        // }
+        // else{
+        //     type=null;
+        // }
+        if($page.url.pathname.indexOf('/snippets') !== -1){
+            console.log("SecondaryNav: /snippets")
             type="snippets"
         }
-        else{
-            type=null;
-        }
     }
+    console.log("SECONDARY NAV COMPONENT: ",data)
+    console.log("SECONDARY NAV CURR PATH: ",$page.url.pathname)
+    console.log("SECONDARY NAV TYPE: ",type)
     // let composed_url = "/"
 // https://joshcollinsworth.com/blog/build-static-sveltekit-markdown-blog 
 // here I interrogate the API to get the second level navigation data, and compose into a suitable markup format:
 // maybe: https://stackoverflow.com/questions/72579031/how-to-fetch-data-inside-sveltekit-component-that-is-not-a-page
 </script>
 <div id="subnav">
+    SUBNAV
     <!-- <p>TODO: Call database from the secondary nav!!</p> -->
     <ul class="pure-menu-list">
         {#if type!==null}
