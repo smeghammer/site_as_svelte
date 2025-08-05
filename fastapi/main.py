@@ -60,21 +60,21 @@ Read-only retrieval endpoints. They overload the back-end function `get_wads()`
 @app.get('/api/all')
 async def wads():
     ''' return JSON list all entries '''
-    data = database.get_wads(detail=False,id=False)
+    data = database.get_wads(detail=False,id=False, type=False)
     return {"status":"ok","message":"retrieved all items summary data OK","data":data}
 
 
 @app.get('/api/all/details')
 async def wads():
     ''' return JSON list all entries '''
-    data = database.get_wads(detail=True,id=False)
+    data = database.get_wads(detail=True,id=False, type=False)
     return {"status":"ok","message":"retrieved all items summary data OK","data":data}
 
 
 @app.get('/api/wads')
 async def wads():
     ''' return JSON list all WAD entries '''
-    data = database.get_wads()
+    data = database.get_wads(detail=False, type="maps")
     return {"status":"ok","message":"retrieved all WAD summary data OK","data":data}
 
 

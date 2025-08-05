@@ -3,7 +3,7 @@ import pymongo
 
 # https://stackoverflow.com/questions/533048/how-to-log-source-file-name-and-line-number-in-python
 logging.basicConfig(format='%(levelname)s: %(asctime)s - %(filename)s (%(lineno)d) - %(message)s')
-logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.INFO)
 
 
 class Database:
@@ -22,12 +22,14 @@ class Database:
         self.connection = pymongo.MongoClient(self.conn_uri)[self.database]
 
 
+    # def get_wads(self,detail=False, type="maps",id=False, slug=False) -> list:
     def get_wads(self,detail=False, type="maps",id=False, slug=False) -> list:
         logging.debug("Getting WADs")
         logging.debug(f"detail: %s type %s, id: %s, slug: %s",detail, type, id, slug)
         try:
             filter = {}
             if type:
+                logging.debug(f"found type %s", type )
                 filter = {'type':type}
             if id:
                 filter['id'] = int(id)  #is a better way than this!
@@ -36,7 +38,7 @@ class Database:
             projection = {"id":True,"title":True,"description":True,"slug":True,"type":True,"imageUrl":True,"_id":False}
             if detail:
                 projection = {"_id":False}
-            logging.debug("FILTER:")
+            logging.debug("FILTER -")
             logging.debug(filter)
             result = list(self.connection['maps'].find(filter,projection))
             logging.debug("GETTING RESULT:")
