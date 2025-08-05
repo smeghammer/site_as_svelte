@@ -5,6 +5,8 @@
     // import maps from "$lib/data/maps.json";
     // import Summaries from "$lib/components/Summaries.svelte";
     import Summary from "$lib/components/Summary.svelte";
+
+    import SecondaryNavInline from "$lib/components/SecondaryNavInline.svelte";
     
     /** 
      * IMPORTANT! A load function on +page.js or +page.server.js run by default, and return a 
@@ -20,6 +22,9 @@
 </script>
 
 <div class="pure-u-1 pure-u-md-5-6 pure-u-lg-3-4">
+
+    <SecondaryNavInline {data}></SecondaryNavInline>
+
     <h2>My WADs</h2>
     <p>
         I started mapping again in April 2020, just after the whole COVID-19

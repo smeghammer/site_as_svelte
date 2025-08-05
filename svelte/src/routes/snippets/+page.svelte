@@ -2,17 +2,23 @@
     // see https://rodneylab.com/sveltekit-json-import/
     // import maps from "$lib/data/maps.json";
     // import Summaries from "$lib/components/Summaries.svelte";
-    import Summary from "$lib/components/Summary.svelte";
+    import SecondaryNavInline from "$lib/components/SecondaryNavInline.svelte";
+import Summary from "$lib/components/Summary.svelte";
     const displayType:string = "snippets";
 
     /** @type {import('./$types').PageData} */ //because we are using +page.js (rather than +page.server.js - would be PageServerData type otherwise?)
     export let data;    //inferred from load function of +page.js
-    console.log("in +page.svelte")
+    // console.log("in +page.svelte")
     // console.log(data);
 
 </script>
 
+
+
 <div class="pure-u-1 pure-u-md-5-6   pure-u-lg-3-4">
+
+    <SecondaryNavInline {data}></SecondaryNavInline>
+
     <h2>Snippets</h2>
     <p>I like to make stuff work.</p>
     <p> I very quickly saw the benefits and possibilities of <a href="https://zdoom.org/wiki/ACS" title="ACS scripting">ACS scripting</a> and the 

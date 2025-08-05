@@ -27,16 +27,15 @@
             type="snippets"
         }
     }
-    console.log("SECONDARY NAV COMPONENT: ",data)
-    console.log("SECONDARY NAV CURR PATH: ",$page.url.pathname)
-    console.log("SECONDARY NAV TYPE: ",type)
+    // console.log("SECONDARY NAV COMPONENT: ",data)
+    // console.log("SECONDARY NAV CURR PATH: ",$page.url.pathname)
+    // console.log("SECONDARY NAV TYPE: ",type)
     // let composed_url = "/"
 // https://joshcollinsworth.com/blog/build-static-sveltekit-markdown-blog 
 // here I interrogate the API to get the second level navigation data, and compose into a suitable markup format:
 // maybe: https://stackoverflow.com/questions/72579031/how-to-fetch-data-inside-sveltekit-component-that-is-not-a-page
 </script>
 <div id="subnav">
-    SUBNAV
     <!-- <p>TODO: Call database from the secondary nav!!</p> -->
     <ul class="pure-menu-list">
         {#if type!==null}
@@ -64,6 +63,7 @@
 but would get inefficient for larger sites. Can I pass a query string back? or a URL path part? This could be done withing the +page.svelte 
 components, but then I run into duplicated code issues.  -->
             {#each data.data as entry}
+            <!-- {entry.type} -->
                 {#if entry.type === type}
                 <li class="pure-menu-item">
                     <!-- if we are on a map/snippet page, we don't want a link: -->

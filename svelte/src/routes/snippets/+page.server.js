@@ -6,13 +6,17 @@ import {error} from "@sveltejs/kit";
 export async function load({params}){
     /** here I need to make an API call to the relevant emdpoint to get the map summary data: */
     try{
-        // const response = await fetch("http://localhost:8001/api/snippets",{method:'GET'});
-        const response = await fetch("http://api:8000/api/snippets",{method:'GET'});
-        const responseData = await response.json()
-        console.log('[SERVER] SNIPPET RESPONSEDATA: ')
-        // console.log(responseData)    // this is CORRECT
-        return(responseData)
+        // const response = await fetch("http://localhost:8001/api/snippet/"+params['slug'],{method:'GET'});
+        let combinedData = {}
+        const snippetresponse = await fetch("http://api:8000/api/snippet/"+params['slug'],{method:'GET'});
+        const snippetresponseData = await snippetresponse.json()
+
+        const allsnippets = await fetch("http://api:8000/api/snippets/", {method: "GET"});
+        const allsnippetsData = await allsnippets.json();
         
+        combinedData = {"currentwad": snippetresponseData, "allmaps": allsnippetsData}
+        // return(responseData)
+        return(combinedData)
     }
     catch(err){
         console.error(`Error in load function for /: ${error}`);

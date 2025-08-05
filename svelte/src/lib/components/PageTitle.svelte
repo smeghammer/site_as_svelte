@@ -7,6 +7,17 @@ import { page } from "$app/stores";
 // import maps from "$lib/data/maps.json"; // I could get page titles from here for the snippets/maps
 import {currentParent, currentTitle} from "$lib/components/stores"
 // console.log($currentParent, $currentTitle)
+/** 
+ * NOTE: This is coming from the LAYOUT.SERVER.JS file, as this component is part of the - um -
+ * layout logic. 
+ * 
+ * It would likely be better to get this data ONCE and pass it into the store.
+ * 
+ * This may also explain why the top level `data.data` element still exists, and is just the 
+ * maps data.
+ * 
+ * Please see /layout.server.js
+  */
 export let data; // navigation and page data
 $: data;
 

@@ -125,27 +125,29 @@ div.toplevelitems > div.current{
     padding-left: 0px;
 }
 
-#subnav{
+#subnav, #subnav_inline{
     padding-top: 15px;
 }
 
-#subnav > ul{
+#subnav > ul, #subnav_inline > ul{
     text-align: center;
     font-style: italic;
 }
 /* alternate l2 nav: */
-#subnav > ul > li{
+#subnav > ul > li, #subnav_inline > ul > li{
 	display: inline-block;
     padding-left: 5px;
     padding-right: 5px;
     padding-top: 2px;
     border-right: 2px solid darkred;
     padding-bottom: 2px;
+    border: none;
+    height: 22px;
 }
-#subnav > ul > li:last-of-type{
+#subnav > ul > li:last-of-type, #subnav_inline > ul > li:last-of-type{
     border-right: none;
 }
-#subnav > ul > li > a{
+#subnav > ul > li > a,#subnav_inline > ul > li > a{
     color: red;
     padding-right: 4px;
 }
