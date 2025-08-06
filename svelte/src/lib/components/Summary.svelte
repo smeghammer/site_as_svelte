@@ -2,8 +2,12 @@
 export let map;
 export let displayType;
 
-// HERE, because this is used in a loop, the value of map (probably not displaytype)
-// will change, so we must set this to be a reactive variable:
+/**
+HERE, because this is used in a loop, the value of map (probably not displaytype)
+will change, so we must set this to be a reactive variable:
+
+Note the comments on other SummaryNoDisplayType component
+*/
 $: displayType = displayType;
 </script>
     {#if map.type === displayType}
