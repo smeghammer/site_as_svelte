@@ -1,12 +1,14 @@
 <script lang="ts">
-// import linktextMapper from "$lib/data/linktextMapper.json";
+    /** 
+     * This uses the load data from the LAYOUT server.js because it is a component of the +layout.svelte page
+     */
 import { linktextMapper } from "$lib/data/linktextMapper";  // now typed in .TS file
 import { page } from "$app/stores";
 
 
 // import maps from "$lib/data/maps.json"; // I could get page titles from here for the snippets/maps
 import {currentParent, currentTitle} from "$lib/components/stores"
-// console.log($currentParent, $currentTitle)
+
 /** 
  * NOTE: This is coming from the LAYOUT.SERVER.JS file, as this component is part of the - um -
  * layout logic. 
@@ -39,8 +41,6 @@ $: if($page.url.pathname.indexOf('/maps/')!== -1 || $page.url.pathname.indexOf('
     current_linktext = undefined;   //to account for missing data
     
     /** using data from +layout.server.js load function: */
-    // console.log("in PageTitle:")
-    // console.log(data);
     for(let item of data.data){
         try{
             let check = new RegExp(item.slug+"$");
@@ -52,14 +52,8 @@ $: if($page.url.pathname.indexOf('/maps/')!== -1 || $page.url.pathname.indexOf('
             console.log("PageTitle error:")
             console.log(e)
         }
-        
     }
 }
-//WTF? THIS does not log, but the below inline tag DOES???  
-// console.log("PARENT NAME FROM STORE: ",$currentParent)
-// $: if($currentParent){
-//     current_linktext = $currentParent;
-// }
 
 /** to convert to better JS!! */
 let prune = function(val){
@@ -92,11 +86,11 @@ $: {
     <div class="pure-u-1 pure-u-md-3-4 pure-u-lg-5-6">
         <!-- this needs some serious re-work. It's got out of hand... -->
         {#if current_linktext!=='not set'}
-        <h1 class="centre">{current_linktext}</h1>
+            <h1 class="centre">{current_linktext}</h1>
         {:else if current_linktext==='not set'}
-        <h1 class="centre">{$currentParent}</h1>
+            <h1 class="centre">{$currentParent}</h1>
         {:else}
-        <h1 class="centre">Not found</h1>
+            <h1 class="centre">Not found</h1>
         {/if}
     </div>
     <div class="pure-u-1 pure-u-md-1-8 pure-u-lg-1-12"></div>
