@@ -7,8 +7,6 @@
     let type="mapsx"
     export let data;
     $: data;    // from layout.server.js
-    // console.log("LAYOUT SERVER LOAD DATA:");
-    // console.log(data);  // this should be ALL DATA
 
     // globally set store:
     import {currentTitle} from "$lib/components/stores"; //read-only here
@@ -22,17 +20,14 @@
 <!-- top menu -->
 <TopNav/>
 
-<!-- conditional secondary nav. pass in the database data from the onload function. 
- 
-Doesnt work properly.
+<!--
+conditional secondary nav. pass in the database data from the onload function. 
 
-UPDATE> This can probably be done with JUST the layout data load? The logic of the 
-return function is nasty - I need to separate out into different handlers to retrieve different data,
+UPDATE: This can probably be done with JUST the layout data load? 
+Also, the logic of the return function is nasty - I need to separate out into different handlers to retrieve different data,
 rather than have a single function with somewhat opaque argument logic.
 -->
-<!-- <SecondaryNav {data} /> -->
-
-<!-- COMPONENT VAR TEST: -->
+<SecondaryNav {data} />
 
 <!-- contents -->
 <div class="pure-g contents">
