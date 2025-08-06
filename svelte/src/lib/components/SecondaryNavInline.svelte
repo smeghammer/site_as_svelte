@@ -2,18 +2,16 @@
     import { page } from '$app/stores';
     let type:String|null = null;
 
-    /** this is coming form the LAYOUT loader!! */
+    /** this is coming form the ROUTE and LAYOUT loaders!! */
     export let data;
     $: data;
 
     /** work out where we are */
     $: {
         if($page.url.pathname.indexOf('/maps') !== -1){
-            // console.log("SecondaryNav: /maps")
             type = "maps";
         }
         if($page.url.pathname.indexOf('/snippets') !== -1){
-            // console.log("SecondaryNav: /snippets")
             type="snippets"
         }
     }
@@ -25,7 +23,7 @@
 
     <ul class="pure-menu-list">
         <!-- weird - we are getting a top level attribute of `data.data` - which holds the maps data. 
-         I am not actually building this, so where TF is it coming from??? -->
+         I am not actually building this, so where TF is it coming from??? from the LAYOUT load function. -->
         {#if type!==null}
             <!-- to account for the changed data structure, get the correct data... -->
             {#each data.allmaps.data as entry}
