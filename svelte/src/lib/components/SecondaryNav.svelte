@@ -11,68 +11,37 @@
 
     /** work out where we are */
     $: {
+        /** initialise `type` to not show nav if not on given route: */
+        type = null;
+        
+        /** handle `/maps` route */
         if($page.url.pathname.indexOf('/maps') !== -1){
-            console.log("SecondaryNav: /maps")
             type = "maps";
         }
-        // else if($page.url.pathname.indexOf('/snippets') !== -1){
-        //     console.log("SecondaryNav: /snippets")
-        //     type="snippets"
-        // }
-        // else{
-        //     type=null;
-        // }
+        
+        /** handle `/snippets` route */
         if($page.url.pathname.indexOf('/snippets') !== -1){
-            console.log("SecondaryNav: /snippets")
             type="snippets"
         }
     }
-    // console.log("SECONDARY NAV COMPONENT: ",data)
-    // console.log("SECONDARY NAV CURR PATH: ",$page.url.pathname)
-    // console.log("SECONDARY NAV TYPE: ",type)
-    // let composed_url = "/"
 // https://joshcollinsworth.com/blog/build-static-sveltekit-markdown-blog 
 // here I interrogate the API to get the second level navigation data, and compose into a suitable markup format:
 // maybe: https://stackoverflow.com/questions/72579031/how-to-fetch-data-inside-sveltekit-component-that-is-not-a-page
 </script>
+
+<!-- This now WORKS because the back-end API, called by the +layout.server.js, is   -->
 <div id="subnav">
-    <!-- <p>TODO: Call database from the secondary nav!!</p> -->
     <ul class="pure-menu-list">
         {#if type!==null}
-            <!-- {#each maps as entry}
-                {#if entry.type === type}
-                    <li class="pure-menu-item"> -->
-                        <!-- if we are on a map/snippet page, we don't want a link: -->
-                        <!-- {#if $page.url.pathname.indexOf(entry.slug) !== -1} -->
-                            <!-- render a text only -->
-                            <!-- <span>{entry.title}</span>
-                        {:else}
-                            {#if $page.url.pathname.indexOf(type+"/") === -1}
-                            <a href="{type}/{entry.slug}" title="{entry.title}">{entry.title}</a>
-
-                            {:else if $page.url.pathname.indexOf(type+"/") !== -1} -->
-                            <!-- because we are already including the type in the path -->
-                            <!-- <a href="{entry.slug}" title="{entry.title}">{entry.title}</a>
-                            {/if}
-                        {/if}
-                    </li>
-                {/if}
-            {/each} -->
-
-<!-- test secondary nav database call. NOTE: This is actually testing ALL data. ATM this is fine as only a small amount of data
-but would get inefficient for larger sites. Can I pass a query string back? or a URL path part? This could be done withing the +page.svelte 
-components, but then I run into duplicated code issues.  -->
+        <!-- 
+        test secondary nav database call. NOTE: This is actually testing ALL data. ATM this is fine as only a small amount of data
+        but would get inefficient for larger sites. Can I pass a query string back? or a URL path part? This could be done withing the +page.svelte 
+        components, but then I run into duplicated code issues. 
+        The inline secondary vav component may be a better solution because it separates out the type of return data, so we only get `map`s or 
+        `snippet`s, not both  -->
             {#each data.data as entry}
-            <!-- {entry.type} -->
                 {#if entry.type === type}
                 <li class="pure-menu-item">
-                    <!-- if we are on a map/snippet page, we don't want a link: -->
-                     <!-- DEBUG -->
-                    <!-- <span style="color: white;"> {entry.slug} </span> -->
-                    <!-- 
-                      maybe do a better check here - if the slug is very short, it could be
-                      a substring of the current path... 
-                    -->
                     {#if $page.url.pathname.indexOf(entry.slug) !== -1}
                         <!-- render a text only -->
                         <span>{entry.title}</span>
@@ -90,9 +59,3 @@ components, but then I run into duplicated code issues.  -->
         {/if}
     </ul>
 </div>
-
-
-
-
-
-
