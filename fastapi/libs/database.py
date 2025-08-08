@@ -48,6 +48,9 @@ class Database:
             logging.error(f"Error getting WADs: %s",ex)
             return [{"status":"error", "message":ex}]
 
+    # place new handlers here:
+    
+
 
     def add_item(self, item):
         new_id = self._get_new_id()
