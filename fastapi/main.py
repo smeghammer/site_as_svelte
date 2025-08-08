@@ -60,48 +60,48 @@ Read-only retrieval endpoints. They overload the back-end function `get_wads()`
 @app.get('/api/all')
 async def wads():
     ''' return JSON list all entries '''
-    data = database.get_wads(detail=False,id=False, type=False)
-    # data = database.get_component_list_summaries()
+    # data = database.get_wads(detail=False,id=False, type=False)
+    data = database.get_component_list_summaries()
     return {"status":"ok","message":"retrieved all items summary data OK","data":data}
 
 
 @app.get('/api/all/details')
 async def wads():
     ''' return JSON list all entries '''
-    data = database.get_wads(detail=True, type=False)
-    # data = database.get_component_list_details()
+    # data = database.get_wads(detail=True, type=False)
+    data = database.get_component_list_details()
     return {"status":"ok","message":"retrieved all items summary data OK","data":data}
 
 
 @app.get('/api/wads')
 async def wads():
     ''' return JSON list all WAD entries '''
-    data = database.get_wads(detail=False, type="maps")
-    # data = database.get_wad_list_summaries()
+    # data = database.get_wads(detail=False, type="maps")
+    data = database.get_wad_list_summaries()
     return {"status":"ok","message":"retrieved all WAD summary data OK","data":data}
 
 
 @app.get('/api/wads/details')
 async def wads():
     ''' return JSON list all WAD entries with all details '''
-    data = database.get_wads(detail=True)
-    # data = database.get_wad_list_details()
+    # data = database.get_wads(detail=True)
+    data = database.get_wad_list_details()
     return {"status":"ok","message":"retrieved all WAD detail data OK","data":data} 
 
 
 @app.get('/api/snippets')
 async def wads():
     ''' return JSON list all snippet/demo entries '''
-    data = database.get_wads(detail=False,type="snippets")
-    # data = database.get_snippet_list_summaries()
+    # data = database.get_wads(detail=False,type="snippets")
+    data = database.get_snippet_list_summaries()
     return {"status":"ok","message":"retrieved all snippet summary data OK","data":data}
 
 
 @app.get('/api/snippets/details')
 async def wads():
     ''' return JSON list all snippet/demo entries with full details '''
-    data = database.get_wads(detail=True,type="snippets")
-    # data = database.get_snippet_list_details()
+    # data = database.get_wads(detail=True,type="snippets")
+    data = database.get_snippet_list_details()
     return {"status":"ok","message":"retrieved all snippet details data OK","data":data}
 
 
