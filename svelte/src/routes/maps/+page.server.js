@@ -11,9 +11,17 @@ export async function load({params}){
     /** here I need to make an API call to the relevant emdpoint to get the map summary data: */
     try{
         // const response = await fetch("http://localhost:8001/api/wads",{method:'GET'});
-        const response = await fetch("http://api:8000/api/wads",{method:'GET'});
-        const responseData = await response.json()
-        return(responseData)
+        const mapresponse = await fetch("http://api:8000/api/wad/"+params['slug'],{method:'GET'});
+        const mapresponseData = await mapresponse.json()
+        const allmaps = await fetch("http://api:8000/api/wads",{method:'GET'});
+        const allmapsData = await allmaps.json()
+
+        let combinedData = {
+            "currentwad": mapresponseData, 
+            "allmaps": allmapsData
+        }
+        return(combinedData)
+
     }
     catch(err){
         console.error(`Error in load function for /: ${error}`);
