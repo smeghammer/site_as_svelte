@@ -11,13 +11,22 @@ WORKDIR /svelte
 COPY . ./
 
 # deploy the node app, based upon the copied config file(s)
-RUN npm install
+RUN npm install --include=dev
 
 # expose the (default) port
 
 # ENV HOST="0.0.0.0"
 
 EXPOSE 5173
+# was not HMR-ing, so found this:
+# https://github.com/fcrozatier/kit_docker/blob/main/Dockerfile
+# CMD ["npm", "rebuild","esbuild","&&", "npm", "run", "dev", "--", "--host"]
+# throws error: 
+    # npm ERR! code EINVALIDTAGNAME
+    # npm ERR! Invalid tag name "&&" of package "&&": Tags may not have any characters that encodeURIComponent encodes.
+# CMD npm rebuild esbuild && npm run dev -- --host
+
+
 
 # and run the dev server
 CMD ["npm","run","dev"]

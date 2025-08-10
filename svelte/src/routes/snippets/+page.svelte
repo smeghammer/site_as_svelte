@@ -11,7 +11,7 @@
 
 <div class="pure-u-1 pure-u-md-5-6   pure-u-lg-3-4">
     <!-- <SecondaryNavInline {data}></SecondaryNavInline> -->
-    <h2>Snippets</h2>
+    <h2>SnippetsARGH</h2>
     <p>I like to make stuff work.</p>
     <p> I very quickly saw the benefits and possibilities of <a href="https://zdoom.org/wiki/ACS" title="ACS scripting">ACS scripting</a> and the 
         various <a href="https://zdoom.org/wiki/Category:Line-ready_specials" title="Line specials">line specials</a>. I'd never used it before so I needed to learn. As such, I generated 

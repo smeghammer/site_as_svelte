@@ -32,7 +32,7 @@ services:
       watch:
         # this - er - syncs the changes:
         - action: sync
-          path: ./
+          path: ./fastapi
           target: /app
         # but THIS is needed to actually reload those changes: 
         - action: rebuild
@@ -50,7 +50,17 @@ services:
 
     # map the local port to container port:
     ports:
-      - "5173:5173" 
+      - "5173:5173"
+
+    develop:
+      watch:
+        # this - er - syncs the changes:
+        - action: sync
+          path: ./svelte
+          target: /svelte
+        # but THIS is needed to actually reload those changes: 
+        - action: rebuild
+          path: ./ 
     
 
 volumes:
