@@ -11,6 +11,9 @@ class Database:
     port = 27017     #27027
     addr = "localhost" 
     database = "smeghammer"
+    items_collection = "maps"
+    items_summary_projection = {"id":True,"title":True,"description":True,"slug":True,"type":True,"imageUrl":True,"_id":False}
+    items_detail_projection = {"_id":False}
     # https://www.mongodb.com/docs/languages/python/pymongo-driver/current/connect/mongoclient/
     # This is the SERVICE NAME form the compose file
     conn_uri = "mongodb://db:27017/"
@@ -40,6 +43,7 @@ class Database:
                 projection = {"_id":False}
             logging.debug("FILTER -")
             logging.debug(filter)
+            # The collection name should probably change here:
             result = list(self.connection['maps'].find(filter,projection))
             logging.debug("GETTING RESULT:")
             logging.debug(result)
@@ -47,6 +51,39 @@ class Database:
         except Exception as ex:
             logging.error(f"Error getting WADs: %s",ex)
             return [{"status":"error", "message":ex}]
+
+    # place new handlers here:
+    def get_component_list_summaries(self):
+        ''' Get all maps and snippets as a list with summaries '''
+        return list(self.connection[self.items_collection].find({},self.items_summary_projection))
+
+
+    def get_component_list_details(self):
+        ''' Get all maps and snippets as a list with full details '''
+        return list(self.connection[self.items_collection].find({},self.items_detail_projection))
+
+
+    def get_wad_list_summaries(self):
+        ''' Get all maps as a list with summaries '''
+        return list(self.connection[self.items_collection].find({"type":"maps"},self.items_summary_projection))
+
+
+    def get_wad_list_details(self):
+        ''' Get all maps as a list with full details '''
+        return list(self.connection[self.items_collection].find({"type":"maps"},self.items_detail_projection))
+
+
+    def get_snippet_list_summaries(self):
+        ''' Get all snippets as a list with summaries '''
+        return list(self.connection[self.items_collection].find({"type":"snippets"},self.items_summary_projection))
+
+
+    def get_snippet_list_details(self):
+        ''' Get all snippets as a list with full details '''
+        return list(self.connection[self.items_collection].find({"type":"snippets"},self.items_detail_projection))
+
+
+
 
 
     def add_item(self, item):
