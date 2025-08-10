@@ -11,7 +11,7 @@ WORKDIR /svelte
 COPY . ./
 
 # deploy the node app, based upon the copied config file(s)
-RUN npm install
+RUN npm install --include=dev
 
 # expose the (default) port
 
