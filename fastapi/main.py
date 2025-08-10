@@ -53,12 +53,6 @@ async def root():
     ''' Return root message '''
     return {"status":"ok","message":"container backend API root TEST"}
 
-# @app.get('/api/reloadtest')
-# async def root():
-#     ''' Return root message '''
-#     return {"status":"ok","message":"hot reload test worked?"}
-
-
 
 '''
 Read-only retrieval endpoints. They overload the back-end function `get_wads()`
