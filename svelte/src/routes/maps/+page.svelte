@@ -19,6 +19,7 @@
 <div class="pure-u-1 pure-u-md-5-6 pure-u-lg-3-4">
 
     <!-- <SecondaryNavInline {data}></SecondaryNavInline> -->
+
     <h2>My WADs</h2>
     <p>
         I started mapping again in April 2020, just after the whole COVID-19
