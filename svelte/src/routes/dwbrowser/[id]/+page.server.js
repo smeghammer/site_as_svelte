@@ -4,6 +4,9 @@ let IDGamesBrowseHistory = {};
 
 let IDGamesTitleMapper = {} //maybe...
 
+// let historyCounter = 0
+
+
 /** load top-level IDGames data */
 export async function load({params}){
    
@@ -25,11 +28,18 @@ export async function load({params}){
             if(!(IDGamesBrowseHistory[id])){
                 currHistoryItem = {
                     "id":id
+                    // ,
+                    // "historyCounter":historyCounter++,
                     // ,"title":title   //todo
                 }
             }
         }
-
+        /** 
+         * This gets the JSON node identified by `id`
+         * What we need to do - rather than arse about with a history - is to build,
+         * sever-side, the nested JSON array on eth hierarchy as we browse around.
+         * This is how I did it on the original Smeghammer site, but client-side: 
+         * */
         const response = await fetch(`https://www.doomworld.com/idgames/api/api.php?out=json&action=getcontents&id=${id}`,{method:'GET'});
         const responseData = await response.json()
         console.log("SERVER:",responseData)
