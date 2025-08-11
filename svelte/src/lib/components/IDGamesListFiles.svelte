@@ -58,20 +58,35 @@ function setParent(){
         currentTitle.set(this.getAttribute("data-title"))
     }
 }
+
+function getSelfLinktext(pathStr){
+    if(pathStr.lastIndexOf('/') === pathStr.length - 1){
+        return(pathStr.split('/')[pathStr.split('/').length-2]);
+    }
+    else{
+        return(pathStr.split('/')[pathStr.split('/').length-1]);
+    }
+    
+}
+
 </script>
 <h3>Directories </h3>
 {#if data.data && data.data.content && data.data.content.dir && Array.isArray(data.data.content.dir)}  <!-- this condition may need to be tightened - I think it is currently excluding single-entry results-->
 <ul id="files_tree">
     {#each data.data.content.dir as thing}
         <li><a href="/dwbrowser/{thing.id}" data-title="{thing.name}" data-id="{thing.id}" title="{thing.name}" data-parentid="{data.currentId}"
-        data-parent="{parentTitle}" on:click={setParent}>{thing.name}</a></li>
+        data-parent="{parentTitle}" on:click={setParent}>
+        { getSelfLinktext(thing.name) }
+        </a></li>
     {/each}
 </ul>
 {:else if data.data && data.data.content && data.data.content.dir && !Array.isArray(data.data.content.dir)}
 <ul id="files_tree">
     <li>
         <a href="/dwbrowser/{data.data.content.dir.id}" data-title="{data.data.content.dir.name}"  data-id="{data.data.content.dir.id}" title="{data.data.content.dir.name}"
-        data-parent="{parentTitle}"  data-parentid="{data.currentId}" on:click={setParent}>{data.data.content.dir.name}</a>
+        data-parent="{parentTitle}"  data-parentid="{data.currentId}" on:click={setParent}>
+            { getSelfLinktext(data.data.content.dir.name) }
+        </a>
     </li>
 </ul>
 {:else}
