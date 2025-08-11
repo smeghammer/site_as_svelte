@@ -19,7 +19,7 @@ console.log("PAGE.SVELTE",data)
 </script>
 
 <div class="pure-u-1 pure-u-md-3-4 pure-u-lg-5-6">
-    <h2>ID Games (slug)</h2>
+    <!-- <h2>ID Games (slug)</h2> -->
 
     <!-- the path component needs to render links with incremental depth attribute values, so going BACK will reset -->
     <IDGamesPath { data } />

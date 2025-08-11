@@ -25,6 +25,8 @@ import {IDGamesDownloadKeyedList} from "$lib/components/stores"
 */
 let bc:any[];
 $:{
+    // the ID Games data:
+    // console.log("IDGAMES DATA: ",data)
     // console.log("am i called twice???")
     /** this is the current slug - i.e. where we actually are. This will have an entry in the browse data */
     let tip = $page.params['id']    // the dynamic route slug value (as a string)
@@ -38,8 +40,11 @@ $:{
         working.push(data.browse_history[k])
     }
     
+    // console.log("HISTORY (working): ",working);
+    
     /** to convert to better JS!! */
     let prune = function(val){
+        // console.log(val);
         let arr = val.split("/").reverse();
 
         let w = []
@@ -52,25 +57,48 @@ $:{
     } 
     bc = [];
     
+    // console.log("WORKING: ",working);
     let counter = 0;
     while(start_at > 0 && counter < 50){    //TO TIDY
         // loop over browse history:
         for(let a=0;a<working.length;a++){
             // see if any of current item childs are start_at:
             if(working[a].childs){
-                for(let b=0; b<working[a].childs.length;b++){
-                    if(start_at === working[a].childs[b].id){
-                        bc.push({'id':start_at,'item':prune(working[a].childs[b].name)})
+                /** As for the old JQuery implementation, the edge case where thee is ONE child directory
+                 * results in an Object() , NOT an array of length 1!
+                 * 
+                 * Therefore, need to check for this:
+                 */
+                // if(working[a].childs[0]){
+
+                // }
+                if(working[a].childs["id"]){
+                    if(start_at === working[a].childs.id){
+                        // Single folder
+                        bc.push({'id':start_at,'item':prune(working[a].childs.name)})
                         // currentTitle.set(prune(working[a].childs[b].name));
+                        $currentTitle=prune(working[a].childs.name)
                         start_at = working[a].id;
                     }
-                }                
+                }
+                else{
+                    // multiple folders
+                    for(let b=0; b<working[a].childs.length;b++){
+                        if(start_at === working[a].childs[b].id){
+                            bc.push({'id':start_at,'item':prune(working[a].childs[b].name)})
+                            // currentTitle.set(prune(working[a].childs[b].name));
+                            $currentTitle=prune(working[a].childs[b].name);
+                            start_at = working[a].id;
+                        }
+                    }  
+                }
+                              
             }
         }  
         counter++;  
     }
     // finally, reverse it again:
-    bc.reverse()
+    bc.reverse();
 }
 
 </script>
@@ -89,12 +117,8 @@ $:{
     when using the output from the IDGamesListFiles.svelte component. This path is built up correctly
     based on a setParent() handler function.
  -->
-
-<h3>Breadcrumb</h3>
-
 <div class="pure-menu pure-menu-horizontal">
     <ul class="pure-menu-list" id="idg_bc">
-
         {#if bc.length > 0}
         <li class="pure-menu-item">
             <a href="/dwbrowser/0" data-id="0" data-level="0">ID Games root</a> &#187; 
