@@ -2,7 +2,6 @@
     /** this gives us access to various properties: */
     import { page } from "$app/stores";
     $: current_route = $page.url.pathname
-    // $: console.log(current_route); // this is undefined unless I prepend with a reactive statement!, BUT logging inline results in expected output
     /** and see https://svelte.dev/tutorial/classes re syntax below*/
 
     // see https://eternaldev.com/blog/5-ways-to-perform-for-loop-in-svelte-each-block
@@ -23,12 +22,12 @@
             <ul class="pure-menu-list">
                 {#each topnavRoutes as route}
                     {#if route.route === "/"}
-                    <li class="pure-menu-item" class:hilight={current_route===route.route}><a href="{route.route}" title="{route.linktext}">{route.linktext}</a></li>
+                        <li class="pure-menu-item" class:homehilight={current_route===route.route}><a href="{route.route}" title="{route.linktext}">{route.linktext}</a></li>
                     {:else}
                         {#if route.route === current_route}
-                        <li class="pure-menu-item" class:hilight={current_route.indexOf(route.route) !== -1}><span>{route.linktext}</span></li>
+                            <li class="pure-menu-item" class:hilight={current_route.indexOf(route.route) !== -1}><span>{route.linktext}</span></li>
                         {:else}
-                    <li class="pure-menu-item" class:hilight={current_route.indexOf(route.route) !== -1}><a href="{route.route}" title="{route.linktext}">{route.linktext}</a></li>
+                            <li class="pure-menu-item" class:hilight={current_route.indexOf(route.route) !== -1}><a href="{route.route}" title="{route.linktext}">{route.linktext}</a></li>
                         {/if}
                     {/if}
                 {/each}
@@ -48,6 +47,9 @@ div#menubar{
 div#menubar li {
     padding-left: 15px;
     /* font-size: medium; */
+}
+#menubar > ul > li.pure-menu-item.homehilight > a{
+	text-decoration: underline;
 }
 #menubar > ul > li.pure-menu-item.hilight > a{
 	color: #c00000;
