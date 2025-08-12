@@ -16,7 +16,11 @@ export async function load({params}){
         const allmaps = await fetch("http://api:8000/api/wads/");
         const allmapsData = await allmaps.json();
         
-        let combinedData = {"currentwad": responseData, "allmaps": allmapsData}
+        let combinedData = {
+            "currentwad": responseData, 
+            "allmaps": allmapsData,
+            "routeIdentifier": {"src":"maps","id":  params['slug']}
+        }
         return(combinedData)
     }
     catch(err){

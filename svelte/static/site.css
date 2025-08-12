@@ -1,7 +1,7 @@
 /* https://stackoverflow.com/questions/12812441/how-do-i-use-woff-fonts-for-my-website */
 @font-face {
     font-family: "AmazDooMLeft";
-    src: url("/fonts/AmazDooMLeft.woff2") format('woff2'),
+    src: url("../fonts/AmazDooMLeft.woff2") format('woff2'),
         url("/fonts/AmazDooMLeft.woff") format('woff'),
         url("/fonts/AmazDooMLeft.ttf") format('truetype'),
         url("/fonts/AmazDooMLeft.svg") format('svg');
@@ -9,7 +9,7 @@
 
 @font-face {
     font-family: "AmazDooMLeftOutline";
-    src: url("/fonts/AmazDooMLeftOutline.woff2") format('woff2'),
+    src: url("../fonts/AmazDooMLeftOutline.woff2") format('woff2'),
         url("/fonts/AmazDooMLeftOutline.woff") format('woff'),
         url("/fonts/AmazDooMLeftOutline.ttf") format('truetype'),
         url("/fonts/AmazDooMLeftOutline.svg") format('svg');

@@ -8,7 +8,12 @@ import {error} from "@sveltejs/kit";
 
 /** test 4: an async SERVER function, emulating a longer-running DB call: This should be on +page.server.js really. See later tests. */
 export async function load({params}){
-    /** here I need to make an API call to the relevant emdpoint to get the map summary data: */
+    /** here I need to make an API call to the relevant emdpoint to get the map summary data: 
+     * 
+     * See also:
+     * https://stackoverflow.com/questions/76982787/provide-data-to-main-layout-from-any-route-in-sveltekit
+     * 
+    */
     try{
         // const response = await fetch("http://localhost:8001/api/wads",{method:'GET'});
         const mapresponse = await fetch("http://api:8000/api/wad/"+params['slug'],{method:'GET'});
@@ -18,7 +23,8 @@ export async function load({params}){
 
         let combinedData = {
             "currentwad": mapresponseData, 
-            "allmaps": allmapsData
+            "allmaps": allmapsData,
+            "routeIdentifier": {"src":"maps", "id":"maps"}
         }
         return(combinedData)
 

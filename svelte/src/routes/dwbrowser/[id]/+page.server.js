@@ -42,7 +42,6 @@ export async function load({params}){
          * */
         const response = await fetch(`https://www.doomworld.com/idgames/api/api.php?out=json&action=getcontents&id=${id}`,{method:'GET'});
         const responseData = await response.json()
-        console.log("SERVER:",responseData)
         /** and get the child IDs from the data and push to the history (maybe only return this when ASKED FOR? - cos it's gonna get BIIIG!) */
         
         /** push to browse history if not there already: (will this be inconsistent with the above?)  */
@@ -50,7 +49,14 @@ export async function load({params}){
             currHistoryItem['childs'] = responseData['content']['dir'];
             IDGamesBrowseHistory[id] =  currHistoryItem;
         }
-        return({"data":responseData,"currentId":id,"currentTitle":title,"browse_history":IDGamesBrowseHistory})
+        
+        return({
+            "data":responseData,
+            "currentId":id,
+            "currentTitle":title,
+            "browse_history":IDGamesBrowseHistory,
+            "routeIdentifier":{"src":"idgames", "id":id}
+        })
     }
     catch(err){
         console.error(`Error in load function for /: ${err}`);
