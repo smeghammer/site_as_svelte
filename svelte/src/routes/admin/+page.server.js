@@ -8,8 +8,8 @@ export async function load({params})  {
     try{
         // const response = await fetch("http://localhost:8001/api/all/details",{method:'GET'});
         const response = await fetch("http://api:8000/api/all/details",{method:'GET'});
-        const responseData = await response.json()
-        return(responseData)
+        const adminData = await response.json()
+        return(adminData)
     }
     catch(err){
         console.error(`Error in load function for /: ${error}`);

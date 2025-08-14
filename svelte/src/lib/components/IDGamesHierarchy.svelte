@@ -7,7 +7,7 @@ export let data;
 let hierarchy:any[] = [];
 $:{
     // the ID Games data:
-    console.log("IDGAMES DATA: ",data)
+    // console.log("IDGAMES DATA: ",data)
     // console.log("am i called twice???")
     /** this is the current slug - i.e. where we actually are. This will have an entry in the browse data */
     // let tip = $page.params['id']    // the dynamic route slug value (as a string)
@@ -57,7 +57,7 @@ $:{
     // finally, reverse it again:
     // bc.reverse();
 
-    console.log("hierarchy: ", hierarchy)
+    // console.log("hierarchy: ", hierarchy)
 }
 
 </script>

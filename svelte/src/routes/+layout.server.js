@@ -1,13 +1,10 @@
 export async function load({params}){
     try{
-        // const response = await fetch("http://localhost:8001/api/all",{method:'GET'});
         const response = await fetch("http://api:8000/api/all",{method:'GET'});
-        const responseData = await response.json()
-        // console.log(responseData)
-        return(responseData)    // this is everything...
+        const layoutData = await response.json()
+        return({"layoutData":layoutData})    // this is everything...
     }
     catch(err){
         console.error(`Error in load function for /: ${err}`);
-        //return([]);
     }
 }

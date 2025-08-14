@@ -14,10 +14,15 @@
      * - the LINKS are all to the depth BELOW the current parent.
      * - So all entries below ID=0 are > level 1  
      */
+
+    /** analyse what is coming back from BOTH the layout AND the route, so I can refactor to move the LAYOUT load explicitly
+     * to the ROUTE
+     */
+
+
 </script>
 
 <div class="pure-u-1 pure-u-md-3-4 pure-u-lg-5-6">
-
     <!-- the path component needs to render links with incremental depth attribute values, so going BACK will reset -->
     <IDGamesPath { data } />
     

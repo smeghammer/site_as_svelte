@@ -1,11 +1,6 @@
 // e.g. https://kit.svelte.dev/docs/routing#page-page-js
 import {error} from "@sveltejs/kit";
 
-// for test 2. This is an array of objects
-// import maps from "$lib/data/maps.json";
-
-// /** @type {import('./$types').PageLoad} */
-
 // Call back-end Mongo database API. I need to get the slug into here:
 export async function load({params}){
     try{
@@ -19,7 +14,7 @@ export async function load({params}){
         let combinedData = {
             "currentwad": responseData, 
             "allmaps": allmapsData,
-            "routeIdentifier": {"src":"maps","id":  params['slug']}
+            // "routeIdentifier": {"src":"maps","id":  params['slug']},
         }
         return(combinedData)
     }
