@@ -6,7 +6,6 @@ import { linktextMapper } from "$lib/data/linktextMapper";  // now typed in .TS 
 import { page } from "$app/stores";
 
 
-// import maps from "$lib/data/maps.json"; // I could get page titles from here for the snippets/maps
 import {currentParent, currentTitle} from "$lib/components/stores"
 
 /** 
@@ -36,24 +35,31 @@ $: current_linktext = linktextMapper[$page.url.pathname];
 
 /** if we have a map or a snippet, use the title as defined in the data. TODO: Look into keying the raw 
  * data on linktext? because otherwise I need to loop and compate slug (and type?)... */
-$: if($page.url.pathname.indexOf('/maps/')!== -1 || $page.url.pathname.indexOf('/snippets/')!== -1){
-    // again, should key the data on slug!!
-    current_linktext = undefined;   //to account for missing data
-    
-    /** using data from +layout.server.js load function: */
-    for(let item of data.data){
-        try{
-            let check = new RegExp(item.slug+"$");
-            if($page.url.pathname.match(check)){
-                current_linktext = item.title;
+
+$: {
+    if(data){
+        if( $page.url.pathname.indexOf('/maps/')!== -1 || $page.url.pathname.indexOf('/snippets/')!== -1 ){
+            // again, should key the data on slug!!
+            current_linktext = undefined;   //to account for missing data
+            
+            /** using data from +layout.server.js load function: */
+            for(let item of data.layoutData.data){
+                try{
+                    let check = new RegExp(item.slug+"$");
+                    if($page.url.pathname.match(check)){
+                        current_linktext = item.title;
+                    }
+                }
+                catch(e){
+                    console.log("PageTitle error:")
+                    console.log(e)
+                }
             }
-        }
-        catch(e){
-            console.log("PageTitle error:")
-            console.log(e)
         }
     }
 }
+
+
 
 /** to convert to better JS!! */
 let prune = function(val){
@@ -80,10 +86,11 @@ $: {
 
 /** TODO: Get LT from STORE for ID Games browser!! */
 </script>
-
+<!-- This is NOT dependent on the layout load stuff...  -->
 <div class="pure-g">
     <div class="pure-u-1 pure-u-md-1-8 pure-u-lg-1-12"></div>
     <div class="pure-u-1 pure-u-md-3-4 pure-u-lg-5-6">
+        <!-- {console.log(data)} -->
         <!-- this needs some serious re-work. It's got out of hand... -->
         {#if current_linktext!=='not set'}
             <h1 class="centre">{current_linktext}</h1>
