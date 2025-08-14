@@ -1,6 +1,5 @@
 <script lang="ts">
     import { page } from '$app/stores';
-    // import maps from "$lib/data/maps.json";
     let type:String|null = null;
 
     // a prop that has inherited the data ultimately from the layout server-load
@@ -39,23 +38,25 @@
         components, but then I run into duplicated code issues. 
         The inline secondary vav component may be a better solution because it separates out the type of return data, so we only get `map`s or 
         `snippet`s, not both  -->
-            {#each data.data as entry}
-                {#if entry.type === type}
-                <li class="pure-menu-item">
-                    {#if $page.url.pathname.indexOf(entry.slug) !== -1}
-                        <!-- render a text only -->
-                        <span>{entry.title}</span>
-                    {:else}
-                        {#if $page.url.pathname.indexOf(type+"/") === -1}
-                            <a href="{type}/{entry.slug}" title="{entry.title}">{entry.title}</a>
-                        {:else if $page.url.pathname.indexOf(type+"/") !== -1}
-                            <!-- because we are already including the type in the path -->
-                            <a href="{entry.slug}" title="{entry.title}">{entry.title}</a>
+            {#if data && data.layoutData}
+                {#each data.layoutData.data as entry}
+                    {#if entry.type === type}
+                    <li class="pure-menu-item">
+                        {#if $page.url.pathname.indexOf(entry.slug) !== -1}
+                            <!-- render a text only -->
+                            <span>{entry.title}</span>
+                        {:else}
+                            {#if $page.url.pathname.indexOf(type+"/") === -1}
+                                <a href="{type}/{entry.slug}" title="{entry.title}">{entry.title}</a>
+                            {:else if $page.url.pathname.indexOf(type+"/") !== -1}
+                                <!-- because we are already including the type in the path -->
+                                <a href="{entry.slug}" title="{entry.title}">{entry.title}</a>
+                            {/if}
                         {/if}
+                    </li>
                     {/if}
-                </li>
-                {/if}
-            {/each}
+                {/each}
+            {/if}
         {/if}
     </ul>
 </div>
