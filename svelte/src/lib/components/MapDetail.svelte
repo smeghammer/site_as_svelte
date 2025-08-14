@@ -3,7 +3,6 @@
  
     /** extract the URL strings, and check them with the core JS URL() class */
     let processedImages = [];
-    console.log(processedImages)
     $: {
         processedImages = [];
         for(let a=0;a<detail.allImages.length;a++){
